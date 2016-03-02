@@ -10,6 +10,7 @@
 		41959C221C85D46B0038DBAE /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41959C211C85D46B0038DBAE /* main.swift */; };
 		419840591C8746080065FEC3 /* InputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419840581C8746080065FEC3 /* InputStream.swift */; };
 		4198405B1C8746AB0065FEC3 /* OutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4198405A1C8746AB0065FEC3 /* OutputStream.swift */; };
+		4198405D1C874E6B0065FEC3 /* BufferedInputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4198405C1C874E6B0065FEC3 /* BufferedInputStream.swift */; };
 		41AE2D791C871D6700C1A639 /* ProtocolConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AE2D781C871D6700C1A639 /* ProtocolConstant.swift */; };
 		41F7A2EA1C86737C00E607A3 /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F7A2E91C86737C00E607A3 /* Socket.swift */; };
 		41F7A2EC1C86755700E607A3 /* Exception.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F7A2EB1C86755700E607A3 /* Exception.swift */; };
@@ -42,6 +43,7 @@
 		41959C2C1C85D4AC0038DBAE /* Application.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		419840581C8746080065FEC3 /* InputStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputStream.swift; sourceTree = "<group>"; };
 		4198405A1C8746AB0065FEC3 /* OutputStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutputStream.swift; sourceTree = "<group>"; };
+		4198405C1C874E6B0065FEC3 /* BufferedInputStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BufferedInputStream.swift; sourceTree = "<group>"; };
 		41AE2D781C871D6700C1A639 /* ProtocolConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtocolConstant.swift; sourceTree = "<group>"; };
 		41B0E1311C85E389007F3DFD /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		41B0E1331C85E939007F3DFD /* DebugServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugServer.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				41F7A2F81C86DBDE00E607A3 /* Utils.swift */,
 				41AE2D781C871D6700C1A639 /* ProtocolConstant.swift */,
 				419840581C8746080065FEC3 /* InputStream.swift */,
+				4198405C1C874E6B0065FEC3 /* BufferedInputStream.swift */,
 				4198405A1C8746AB0065FEC3 /* OutputStream.swift */,
 			);
 			name = Sources;
@@ -196,6 +199,7 @@
 				41F7A2F11C86B4B100E607A3 /* Record.swift in Sources */,
 				41F7A2F51C86C3BE00E607A3 /* SingleConnection.swift in Sources */,
 				41F7A2F91C86DBDE00E607A3 /* Utils.swift in Sources */,
+				4198405D1C874E6B0065FEC3 /* BufferedInputStream.swift in Sources */,
 				41F7A2F71C86C4E600E607A3 /* Request.swift in Sources */,
 				41AE2D791C871D6700C1A639 /* ProtocolConstant.swift in Sources */,
 				41F7A2EA1C86737C00E607A3 /* Socket.swift in Sources */,

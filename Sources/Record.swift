@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal final class Record {
+public final class Record {
     //var version: UInt8 = 1
     var type: RecordType = .UNKNOWN_TYPE
     var requestId: UInt16 = 0

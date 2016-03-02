@@ -39,23 +39,25 @@ internal final class Utils {
         while index < dataToParse.count {
             
             var nameLength: UInt32 = 0
-            for ; index < dataToParse.count ; ++index {
+            while index < dataToParse.count {
                 let byte = dataToParse[index]
                 nameLength = nameLength << 8 + UInt32(byte)
                 if hightBixMask & byte == 0 {
                     break
                 }
+                index += 1
             }
             
             var valueLength: UInt32 = 0
-            for ; index < dataToParse.count ; ++index {
+            while index < dataToParse.count {
                 let byte = dataToParse[index]
                 valueLength = valueLength << 8 + UInt32(byte)
                 if hightBixMask & byte == 0 {
                     break
                 }
+                index += 1
             }
-
+            
             var name: String?
             var value: String?
             if nameLength > 0 {

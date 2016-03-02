@@ -123,12 +123,24 @@ public class SingleConnection: Connection {
     }
     
     private func handleStdIn(record: Record) {
+        guard let req = self.request else {
+            // Current request isn't valid maybe something wrong
+            // in data sent from server
+            return
+        }
         
+        if record.contentLength > 0, let cntData = record.contentData {
+            guard let stdIn = req.STDIN else {
+                req.STDIN = BufferedInputStream.fromRecord(record)
+                return
+            }
+            stdIn.addData(cntData)
+        }
     }
     
     private func handleBeginRequest(record: Record) {
         do {
-            let req = try Request.fromRecord(record)
+            let req = try Request.fromRecord(record, conn: self)
             self.request = req
         } catch {
             // Can't create request from received record

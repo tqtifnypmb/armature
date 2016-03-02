@@ -9,6 +9,7 @@
 import Foundation
 
 public protocol InputStream {
-    func readInto(buffer: UnsafeMutablePointer<UInt8>, bufferLen: Int) -> Int
+    func readInto(buffer: [UInt8]) -> Int
     static func fromRecord(record: Record) -> InputStream
+    func addData(dataToAdd: [UInt8])
 }

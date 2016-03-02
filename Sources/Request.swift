@@ -46,7 +46,8 @@ public class Request {
     var STDERR: OutputStream?
     var DATA: [UInt8]?
     
-    class func fromRecord(record: Record) throws -> Request {
+    var connection: Connection!
+    class func fromRecord(record: Record, conn: Connection) throws -> Request {
         assert(record.type == .BEGIN_REQUEST)
         guard let cntData = record.contentData else {
             throw DataError.InvalidData
@@ -58,6 +59,7 @@ public class Request {
         req.requestId = record.requestId
         req.role = role
         req.flags = cntData[2]
+        req.connection = conn
         return req
     }
     
