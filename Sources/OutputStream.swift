@@ -9,5 +9,7 @@
 import Foundation
 
 public protocol OutputStream {
-    func write(buffer: UnsafeMutablePointer<UInt8>, bufferLen: Int) -> Int
+    init()
+    func write(data: [UInt8]) -> Int
+    func writeString(data: String) throws
 }

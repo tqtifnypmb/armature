@@ -12,14 +12,14 @@ public class SingleConnection: Connection {
     let sock: Int32
     var stop = false
     var request: Request?
-    var server: Server!
+    public var server: Server
     
-    required public init(sock: Int32) {
+    required public init(sock: Int32, server: Server) {
         self.sock = sock
+        self.server = server
     }
     
-    public func loop(server: Server) {
-        self.server = server
+    public func loop() {
         while !stop {
             do {
                 try processInput()
@@ -74,20 +74,21 @@ public class SingleConnection: Connection {
         let ret = Record()
         ret.type = RecordType.GET_VALUE_RESULT
         ret.requestId = 0
-        var query = Utils.parseNameValueData(cntData)
+        let query = Utils.parseNameValueData(cntData)
+        var result: [String : String] = [:]
         
         for name in query.keys {
             switch name {
             case FCGI_MAX_CONNS:
-                query[name] = String(self.server.maxConnections)
+                result[name] = String(self.server.maxConnections)
                 break
                 
             case FCGI_MAX_REQS:
-                query[name] = String(self.server.maxRequests)
+                result[name] = String(self.server.maxRequests)
                 break
                 
             case FCGI_MPXS_CONNS:
-                query[name] = String(0)
+                result[name] = String(0)
                 break
                 
             default:
@@ -95,7 +96,7 @@ public class SingleConnection: Connection {
                 break
             }
         }
-        ret.contentData = Utils.encodeNameValueData(query)
+        ret.contentData = Utils.encodeNameValueData(result)
         ret.contentLength = UInt16(ret.contentData!.count)
         try ret.writeTo(self.sock)
     }
@@ -130,11 +131,7 @@ public class SingleConnection: Connection {
         }
         
         if record.contentLength > 0, let cntData = record.contentData {
-            guard let stdIn = req.STDIN else {
-                req.STDIN = BufferedInputStream.fromRecord(record)
-                return
-            }
-            stdIn.addData(cntData)
+            req.STDIN.addData(cntData)
         }
     }
     

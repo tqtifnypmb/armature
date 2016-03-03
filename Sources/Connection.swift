@@ -9,6 +9,7 @@
 import Foundation
 
 public protocol Connection{
-    init(sock: Int32)
-    func loop(server: Server)
+    var server: Server {get}
+    init(sock: Int32, server: Server)
+    func loop()
 }

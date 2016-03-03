@@ -18,7 +18,7 @@ public final class Record {
     class func readFrom(sock: Int32) throws -> Record? {
         var buffer = [UInt8].init(count: FCGI_HEADER_LEN, repeatedValue: 0)
         try Utils.readN(sock, buffer: &buffer, n: UInt32(FCGI_HEADER_LEN))
-        
+    
         let record = Record()
         record.requestId = UInt16(buffer[2]) << 8 + UInt16(buffer[3])
         record.contentLength = UInt16(buffer[4]) << 8 + UInt16(buffer[5])
@@ -29,7 +29,7 @@ public final class Record {
         } else {
             // Ignore unsupport request type
             // FIXME log may be necessary
-            try skip(sock, len: UInt32(record.contentLength) + paddingLength)
+            //try skip(sock, len: UInt32(record.contentLength) + paddingLength)
             return nil
         }
         

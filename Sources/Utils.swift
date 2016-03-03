@@ -35,38 +35,48 @@ internal final class Utils {
         let hightBixMask: UInt8 = 1 << 7
         
         var index = 0
-        var params: [String : String] = [:]
+        var params: [String : String?] = [:]
         while index < dataToParse.count {
             
             var nameLength: UInt32 = 0
             while index < dataToParse.count {
                 let byte = dataToParse[index]
-                nameLength = nameLength << 8 + UInt32(byte)
-                if hightBixMask & byte == 0 {
+                index += 1
+                
+                if hightBixMask & byte == 1 {
+                    let firstBytes = nameLength == 0
+                    firstBytes ? (nameLength << 8 + UInt32(byte)) & 0x7f : nameLength << 8 + UInt32(byte)
+                } else {
+                    nameLength = nameLength << 8 + UInt32(byte)
                     break
                 }
-                index += 1
             }
             
             var valueLength: UInt32 = 0
             while index < dataToParse.count {
                 let byte = dataToParse[index]
-                valueLength = valueLength << 8 + UInt32(byte)
-                if hightBixMask & byte == 0 {
+                index += 1
+                
+                if hightBixMask & byte == 1 {
+                    let firstBytes = valueLength == 0
+                    firstBytes ? (valueLength << 8 + UInt32(byte)) & 0x7f : valueLength << 8 + UInt32(byte)
+                } else {
+                    valueLength = valueLength << 8 + UInt32(byte)
                     break
                 }
-                index += 1
             }
             
             var name: String?
             var value: String?
             if nameLength > 0 {
-                let nameBytes = dataToParse[dataToParse.startIndex.advancedBy(index) ... dataToParse.startIndex.advancedBy(index + Int(nameLength))]
+                let nameBytes = dataToParse[dataToParse.startIndex.advancedBy(index) ... dataToParse.startIndex.advancedBy(index + Int(nameLength) - 1)]
                 name = String.init(bytes: nameBytes, encoding: NSUTF8StringEncoding)
+                index += Int(nameLength)
             }
             if valueLength > 0 {
-                let valueBytes = dataToParse[dataToParse.startIndex.advancedBy(index + Int(nameLength)) ... dataToParse.startIndex.advancedBy(index + Int(nameLength) + Int(valueLength))]
+                let valueBytes = dataToParse[dataToParse.startIndex.advancedBy(index) ... dataToParse.startIndex.advancedBy(index + Int(valueLength) - 1)]
                 value = String.init(bytes: valueBytes, encoding: NSUTF8StringEncoding)
+                index += Int(valueLength)
             }
             
             if let name = name {
@@ -76,35 +86,18 @@ internal final class Utils {
         return params
     }
     
-    static func encodeNameValueData(dataToEncode: [String : String?]) -> [UInt8] {
+    static func encodeNameValueData(dataToEncode: [String : String]) -> [UInt8] {
         var ret: [UInt8] = []
         for (name , value) in dataToEncode {
-            guard let value = value else {
-                continue
-            }
             let nameLen = name.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
             var nameBuffer = [UInt8].init(count:nameLen, repeatedValue: 0)
-            guard name.getBytes(&nameBuffer,
-                maxLength: nameLen,
-                usedLength: nil,
-                encoding: NSUTF8StringEncoding,
-                options: .AllowLossy,
-                range: Range(start: name.startIndex, end: name.endIndex),
-                remainingRange: nil) == true else {
+            guard name.toBytes(&nameBuffer) else {
                 continue
             }
             
             let valueLen = value.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
             var valueBuffer = [UInt8].init(count: valueLen, repeatedValue: 0)
-            
-            guard value.getBytes(&valueBuffer,
-                maxLength: valueLen,
-                usedLength: nil,
-                encoding: NSUTF8StringEncoding,
-                options: .AllowLossy,
-                range: Range(start: name.startIndex,
-                    end: name.endIndex),
-                remainingRange: nil) == true else {
+            guard value.toBytes(&valueBuffer) else {
                 continue
             }
             
@@ -112,7 +105,6 @@ internal final class Utils {
             ret.appendContentsOf(encodeLength(valueLen))
             ret.appendContentsOf(nameBuffer)
             ret.appendContentsOf(valueBuffer)
-            
         }
         return ret
     }
@@ -120,9 +112,10 @@ internal final class Utils {
     static func encodeLength(len: Int) -> [UInt8] {
         let lastByteMask = 0xFF
         var lenInBytes: [UInt8] = []
-        while len & lastByteMask != 0 {
-            lenInBytes.insert(UInt8(len & lastByteMask), atIndex: 0)
-            len >> 8
+        var length = len
+        while length != 0 && length & lastByteMask != 0 {
+            lenInBytes.insert(UInt8(length & lastByteMask), atIndex: 0)
+            length >>= 8
         }
         return lenInBytes
     }
