@@ -18,41 +18,52 @@ public class Request {
     var role: Role = .RESPONDER
     var flags: UInt8 = 0
     
-    var STDIN: InputStream
-    var STDOUT: OutputStream
-    var STDERR: OutputStream
+    var STDIN: InputStorage
+    var STDOUT: OutputStorage
+    var STDERR: OutputStorage
     var DATA: [UInt8]?
     var params: [String : String] = [:]
     var connection: Connection!
     
-    class func fromRecord(record: Record, conn: Connection) throws -> Request {
+    init(record: Record, conn: Connection) throws {
         assert(record.type == .BEGIN_REQUEST)
+        
+        self.connection = conn
+        self.STDIN = BufferedInputStorage(conn: self.connection)
+        self.STDOUT = BufferedOutputStorage(conn: self.connection, reqId: record.requestId, isErr: false)
+        self.STDERR = BufferedOutputStorage(conn: self.connection, reqId: record.requestId, isErr: true)
+        
         guard let cntData = record.contentData else {
             throw DataError.InvalidData
         }
-        guard let role = Role(rawValue: UInt8(cntData[0] << 8 + cntData[1])) else {
-            throw DataError.UnknownRole("Unknown role \(cntData[0] << 8 + cntData[1])")
+        guard let role = Role(rawValue: UInt16(cntData[0]) << 8 + UInt16(cntData[1])) else {
+            throw DataError.UnknownRole("Unknown role \(UInt16(cntData[0]) << 8 + UInt16(cntData[1]))")
         }
-        let req = Request(input: conn.server.inputStreamType.init(), output: conn.server.outputStreamType.init(), err: conn.server.outputStreamType.init())
-        req.requestId = record.requestId
-        req.role = role
-        req.flags = cntData[2]
-        req.connection = conn
-        return req
+        
+        self.requestId = record.requestId
+        self.role = role
+        self.flags = cntData[2]
     }
     
-    init(input: InputStream, output: OutputStream, err: OutputStream) {
-        self.STDIN = input
-        self.STDOUT = output
-        self.STDERR = err
+    func setParams(params: [String : String]) {
+        self.params = params
+        if let cnt = params["CONTENT_LENGTH"], let cntLen = UInt16(cnt) {
+            self.STDIN.contentLength = cntLen
+        }
     }
     
-    func setParams(params: [String : String?]) {
-        // drop all items that without value
-        for (name , value) in params {
-            if let value = value {
-                self.params.updateValue(name, forKey: value)
-            }
-        }
+    func finishHandling(appStatus: UInt8, protoStatus: ProtocolStatus) throws {
+        try self.STDOUT.flush()
+        try self.STDERR.flush()
+        try self.STDOUT.writeEOF()
+        try self.STDERR.writeEOF()
+        let completeRecord = Record()
+        completeRecord.requestId = self.requestId
+        completeRecord.type = RecordType.END_REQUEST
+        completeRecord.contentLength = 2
+        completeRecord.contentData = [protoStatus.rawValue, appStatus]
+        try completeRecord.writeTo(self.connection)
+        try self.STDOUT.flush()
+        try self.STDERR.flush()
     }
 }

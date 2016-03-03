@@ -8,14 +8,15 @@
 
 import Foundation
 
-public class BufferedOutputStream: OutputStream {
+public class RawOutputStream: OutputStream {
     
-    required public init() {
-        
+    let sock: Int32
+    required public init(sock: Int32) {
+        self.sock = sock
     }
     
-    public func write(buffer: [UInt8]) -> Int {
-        return 0
+    public func write(inout buffer: [UInt8]) throws {
+        return try Utils.writeN(self.sock, data: &buffer, n: UInt32(buffer.count))
     }
     
     public func writeString(data: String) throws {
@@ -24,6 +25,6 @@ public class BufferedOutputStream: OutputStream {
         guard data.toBytes(&dataBuffer) else {
             throw DataError.InvalidData
         }
-        self.write(dataBuffer)
+        try self.write(&dataBuffer)
     }
 }

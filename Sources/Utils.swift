@@ -11,8 +11,9 @@ import Foundation
 internal final class Utils {
     static func readN(sock: Int32, buffer: UnsafeMutablePointer<Void>, n: UInt32) throws {
         var remain = n
+        let ptr = buffer
         while remain > 0 {
-            let nread = read(sock, buffer.advancedBy(Int(n - remain)) , Int(remain))
+            let nread = read(sock, ptr.advancedBy(Int(n - remain)) , Int(remain))
             if (nread == -1) {
                 throw SocketError.ReadFailed(Socket.getErrorDescription())
             }
@@ -20,6 +21,8 @@ internal final class Utils {
         }
     }
     
+    // FIXME
+    // interface should be better
     static func writeN(sock: Int32, data: UnsafeMutablePointer<Void>, n: UInt32) throws {
         var remain = n
         while remain > 0 {
@@ -31,11 +34,11 @@ internal final class Utils {
         }
     }
     
-    static func parseNameValueData(dataToParse: [UInt8]) -> [String: String?] {
+    static func parseNameValueData(dataToParse: [UInt8]) -> [String: String] {
         let hightBixMask: UInt8 = 1 << 7
         
         var index = 0
-        var params: [String : String?] = [:]
+        var params: [String : String] = [:]
         while index < dataToParse.count {
             
             var nameLength: UInt32 = 0
@@ -45,7 +48,7 @@ internal final class Utils {
                 
                 if hightBixMask & byte == 1 {
                     let firstBytes = nameLength == 0
-                    firstBytes ? (nameLength << 8 + UInt32(byte)) & 0x7f : nameLength << 8 + UInt32(byte)
+                    nameLength = firstBytes ? UInt32(byte) & UInt32(0x7f) : nameLength << 8 + UInt32(byte)
                 } else {
                     nameLength = nameLength << 8 + UInt32(byte)
                     break
@@ -59,7 +62,7 @@ internal final class Utils {
                 
                 if hightBixMask & byte == 1 {
                     let firstBytes = valueLength == 0
-                    firstBytes ? (valueLength << 8 + UInt32(byte)) & 0x7f : valueLength << 8 + UInt32(byte)
+                    valueLength = firstBytes ? UInt32(byte) & UInt32(0x7f) : valueLength << 8 + UInt32(byte)
                 } else {
                     valueLength = valueLength << 8 + UInt32(byte)
                     break
@@ -77,6 +80,8 @@ internal final class Utils {
                 let valueBytes = dataToParse[dataToParse.startIndex.advancedBy(index) ... dataToParse.startIndex.advancedBy(index + Int(valueLength) - 1)]
                 value = String.init(bytes: valueBytes, encoding: NSUTF8StringEncoding)
                 index += Int(valueLength)
+            } else {
+                value = ""
             }
             
             if let name = name {
@@ -96,20 +101,25 @@ internal final class Utils {
             }
             
             let valueLen = value.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
-            var valueBuffer = [UInt8].init(count: valueLen, repeatedValue: 0)
-            guard value.toBytes(&valueBuffer) else {
-                continue
-            }
-            
             ret.appendContentsOf(encodeLength(nameLen))
             ret.appendContentsOf(encodeLength(valueLen))
             ret.appendContentsOf(nameBuffer)
-            ret.appendContentsOf(valueBuffer)
+            
+            if valueLen > 0 {
+                var valueBuffer = [UInt8].init(count: valueLen, repeatedValue: 0)
+                guard value.toBytes(&valueBuffer) else {
+                    continue
+                }
+                ret.appendContentsOf(valueBuffer)
+            }
         }
         return ret
     }
     
     static func encodeLength(len: Int) -> [UInt8] {
+        guard len != 0 else {
+            return [0]
+        }
         let lastByteMask = 0xFF
         var lenInBytes: [UInt8] = []
         var length = len

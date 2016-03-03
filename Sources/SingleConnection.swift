@@ -9,34 +9,61 @@
 import Foundation
 
 public class SingleConnection: Connection {
-    let sock: Int32
+    public let sock: Int32
     var stop = false
     var request: Request?
+    
+    public var inputStreamType: InputStream.Type = RawInputStream.self
+    public var outputStreamType: OutputStream.Type = RawOutputStream.self
     public var server: Server
     
+    private var inputStream: InputStream!
+    private var outputStream: OutputStream!
     required public init(sock: Int32, server: Server) {
         self.sock = sock
         self.server = server
     }
     
-    public func loop() {
+    public func loop() throws {
+        self.inputStream = self.inputStreamType.init(sock: self.sock)
+        self.outputStream = self.outputStreamType.init(sock: self.sock)
         while !stop {
-            do {
-                try processInput()
-            } catch {
-                // All data processing error 
-                // should be handled here
-                print(error)
-                break
-            }
+            try waitForData(nil)
+            try processInput()
         }
     }
     
+    public func readInto(inout buffer: [UInt8]) throws -> Int {
+        return try self.inputStream.readInto(&buffer)
+    }
+    
+    public func write(inout data: [UInt8]) throws {
+        try self.outputStream.write(&data)
+    }
+    
+    private func waitForData(timeout: UnsafeMutablePointer<timeval>) throws -> Bool {
+        var read_set = fd_set()
+        read_set.fds_bits.0 = self.sock
+        
+        var nready: Int32
+        if timeout == nil {
+            var t = timeval()
+            t.tv_sec = 0
+            //FIXME
+            nready = select(self.sock + 1, &read_set, nil, nil, &t)
+        } else {
+            nready = select(self.sock + 1, &read_set, nil, nil, timeout)
+        }
+        if (nready == -1) {
+            throw SocketError.SelectFailed(Socket.getErrorDescription())
+        }
+        return nready != 0
+    }
+    
     private func processInput() throws {
-        guard let record = try Record.readFrom(self.sock) else {
+        guard let record = try Record.readFrom(self) else {
             return
         }
-        
         switch record.type {
         case .GET_VALUE:
             try self.handleGetValue(record)
@@ -47,7 +74,7 @@ public class SingleConnection: Connection {
             break
             
         case .PARAMS:
-            self.handleParams(record)
+            try self.handleParams(record)
             break
             
         case .STDIN:
@@ -55,7 +82,7 @@ public class SingleConnection: Connection {
             break
             
         case .BEGIN_REQUEST:
-            self.handleBeginRequest(record)
+            try self.handleBeginRequest(record)
             break
             
         default:
@@ -74,37 +101,37 @@ public class SingleConnection: Connection {
         let ret = Record()
         ret.type = RecordType.GET_VALUE_RESULT
         ret.requestId = 0
-        let query = Utils.parseNameValueData(cntData)
-        var result: [String : String] = [:]
+        var query = Utils.parseNameValueData(cntData)
         
         for name in query.keys {
             switch name {
             case FCGI_MAX_CONNS:
-                result[name] = String(self.server.maxConnections)
+                query[name] = String(self.server.maxConnections)
                 break
                 
             case FCGI_MAX_REQS:
-                result[name] = String(self.server.maxRequests)
+                query[name] = String(self.server.maxRequests)
                 break
                 
             case FCGI_MPXS_CONNS:
-                result[name] = String(0)
+                query[name] = String(0)
                 break
                 
             default:
                 // Unknown query
-                break
+                // Ignore it
+                return
             }
         }
-        ret.contentData = Utils.encodeNameValueData(result)
+        ret.contentData = Utils.encodeNameValueData(query)
         ret.contentLength = UInt16(ret.contentData!.count)
-        try ret.writeTo(self.sock)
+        try ret.writeTo(self)
     }
     
     private func handleAbortRequest(record: Record) {
     }
     
-    private func handleParams(record: Record) {
+    private func handleParams(record: Record) throws {
         guard let req = self.request else {
             // Current request isn't valid maybe something wrong
             // in data sent from server
@@ -114,7 +141,7 @@ public class SingleConnection: Connection {
         guard record.contentLength != 0 , let cntData = record.contentData else {
             // A empty params is sent
             // tick the request
-            self.server.handleRequest(req)
+            try self.server.handleRequest(req)
             self.request = nil
             return
         }
@@ -135,14 +162,8 @@ public class SingleConnection: Connection {
         }
     }
     
-    private func handleBeginRequest(record: Record) {
-        do {
-            let req = try Request.fromRecord(record, conn: self)
-            self.request = req
-        } catch {
-            // Can't create request from received record
-            print(error)
-            return
-        }
+    private func handleBeginRequest(record: Record) throws {
+        let req = try Request(record: record, conn: self)
+        self.request = req
     }
 }

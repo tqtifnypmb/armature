@@ -15,8 +15,6 @@ public class DebugServer : Server{
     public var maxConnections: UInt64
     public var maxRequests: UInt64
     public var connectionType: Connection.Type = SingleConnection.self
-    public var inputStreamType: InputStream.Type = BufferedInputStream.self
-    public var outputStreamType: OutputStream.Type = BufferedOutputStream.self
     private var sock: Socket = Socket()
     private var app: Application?
     
@@ -35,12 +33,19 @@ public class DebugServer : Server{
     
     public func run(app: Application) {
         self.app = app
+        
+        self.sock = Socket()
+        self.sock.socketFd = 0
+
+        /*
         do {
-            sock = try Socket.createBoundTcpSocket(self.addr, port: self.port)
+            let path = "/Users/tqtifnypmb/lighttpd/armature"
+            self.sock = try Socket.createBoundUnixSocket(path)
         } catch {
-            // FIXME: Log here
             print(error)
+            assert(false)
         }
+        */
         
         defer {
             self.sock.closeSocket()
@@ -48,9 +53,12 @@ public class DebugServer : Server{
         
         while true {
             do {
+                // wait indefinitely
+                //try self.sock.waitForConnection(nil)
+                
                 let conn = try self.sock.acceptConnection()
                 let connection = self.connectionType.init(sock: conn, server: self)
-                connection.loop()
+                try connection.loop()
             } catch {
                 print(error)
                 break
@@ -58,30 +66,31 @@ public class DebugServer : Server{
         }
     }
     
-    public func handleRequest(request: Request) {
+    public func handleRequest(request: Request) throws {
         guard let app = self.app else {
             return
         }
         let env = Environment(request: request)
         var headers: [String : String]?
-        
-        let respondWriter = { (output: String, error: String?) throws -> Void in
+        let respondWriter = { (output: String, error: String? ) throws -> Void in
             if let headers = headers {
-                let headerBytes = Utils.encodeNameValueData(headers)
-                request.STDOUT.write(headerBytes)
+                try request.STDOUT.writeString(headers.description)
             }
             headers = nil
             
             try request.STDOUT.writeString(output)
             if let error = error {
-                try request.STDOUT.writeString(error)
+                try request.STDERR.writeString(error)
             }
         }
         
         let respondHeaders = { (status: String, respHeaders: [String : String]) -> RespondWriter in
             headers = respHeaders
+            headers!["Status"] = status
             return respondWriter
         }
-        app.main(env, respondHeaders: respondHeaders)
+
+        let appStatus = app.main(env, respondHeaders: respondHeaders)
+        try request.finishHandling(appStatus, protoStatus: ProtocolStatus.REQUEST_COMPLETE)
     }
 }

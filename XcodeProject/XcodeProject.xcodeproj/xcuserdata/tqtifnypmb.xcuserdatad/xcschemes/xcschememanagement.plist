@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>SimpleClient.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>UnitTests.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -23,6 +28,11 @@
 			<true/>
 		</dict>
 		<key>41EE367C1C87F4F20091844C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>41EE369C1C8817110091844C</key>
 		<dict>
 			<key>primary</key>
 			<true/>

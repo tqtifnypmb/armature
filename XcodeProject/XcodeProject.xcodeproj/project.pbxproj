@@ -7,10 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		417C64571C88764E001ACD44 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417C64561C88764E001ACD44 /* Log.swift */; };
+		41BD5BC41C888B8800E8015E /* InputStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BD5BC31C888B8800E8015E /* InputStorage.swift */; };
+		41BD5BC61C888C0A00E8015E /* OutputStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BD5BC51C888C0A00E8015E /* OutputStorage.swift */; };
+		41BD5BC81C888EA200E8015E /* BufferedInputStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BD5BC71C888EA200E8015E /* BufferedInputStorage.swift */; };
+		41BD5BCA1C888EAB00E8015E /* BufferedOutputStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BD5BC91C888EAB00E8015E /* BufferedOutputStorage.swift */; };
+		41BD5BCB1C88A20100E8015E /* InputStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BD5BC31C888B8800E8015E /* InputStorage.swift */; };
+		41BD5BCC1C88A20100E8015E /* OutputStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BD5BC51C888C0A00E8015E /* OutputStorage.swift */; };
+		41BD5BCD1C88A20100E8015E /* BufferedInputStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BD5BC71C888EA200E8015E /* BufferedInputStorage.swift */; };
+		41BD5BCE1C88A20100E8015E /* BufferedOutputStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BD5BC91C888EAB00E8015E /* BufferedOutputStorage.swift */; };
+		41BD5BCF1C88A20300E8015E /* InputStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BD5BC31C888B8800E8015E /* InputStorage.swift */; };
+		41BD5BD01C88A20300E8015E /* OutputStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BD5BC51C888C0A00E8015E /* OutputStorage.swift */; };
+		41BD5BD11C88A20300E8015E /* BufferedInputStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BD5BC71C888EA200E8015E /* BufferedInputStorage.swift */; };
+		41BD5BD21C88A20300E8015E /* BufferedOutputStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BD5BC91C888EAB00E8015E /* BufferedOutputStorage.swift */; };
 		41EE36501C87F4740091844C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE364F1C87F4740091844C /* main.swift */; };
 		41EE36681C87F47F0091844C /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36571C87F47F0091844C /* Application.swift */; };
-		41EE36691C87F47F0091844C /* BufferedInputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36581C87F47F0091844C /* BufferedInputStream.swift */; };
-		41EE366A1C87F47F0091844C /* BufferedOutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36591C87F47F0091844C /* BufferedOutputStream.swift */; };
+		41EE36691C87F47F0091844C /* RawInputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36581C87F47F0091844C /* RawInputStream.swift */; };
+		41EE366A1C87F47F0091844C /* RawOutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36591C87F47F0091844C /* RawOutputStream.swift */; };
 		41EE366B1C87F47F0091844C /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE365A1C87F47F0091844C /* Connection.swift */; };
 		41EE366C1C87F47F0091844C /* DebugServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE365B1C87F47F0091844C /* DebugServer.swift */; };
 		41EE366D1C87F47F0091844C /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE365C1C87F47F0091844C /* Environment.swift */; };
@@ -27,8 +40,8 @@
 		41EE36781C87F47F0091844C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36671C87F47F0091844C /* Utils.swift */; };
 		41EE36801C87F4F20091844C /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE367F1C87F4F20091844C /* UnitTests.swift */; };
 		41EE36851C87F5010091844C /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36571C87F47F0091844C /* Application.swift */; };
-		41EE36861C87F5010091844C /* BufferedInputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36581C87F47F0091844C /* BufferedInputStream.swift */; };
-		41EE36871C87F5010091844C /* BufferedOutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36591C87F47F0091844C /* BufferedOutputStream.swift */; };
+		41EE36861C87F5010091844C /* RawInputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36581C87F47F0091844C /* RawInputStream.swift */; };
+		41EE36871C87F5010091844C /* RawOutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36591C87F47F0091844C /* RawOutputStream.swift */; };
 		41EE36881C87F5010091844C /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE365A1C87F47F0091844C /* Connection.swift */; };
 		41EE36891C87F5010091844C /* DebugServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE365B1C87F47F0091844C /* DebugServer.swift */; };
 		41EE368A1C87F5010091844C /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE365C1C87F47F0091844C /* Environment.swift */; };
@@ -43,6 +56,24 @@
 		41EE36931C87F5010091844C /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36651C87F47F0091844C /* Socket.swift */; };
 		41EE36941C87F5010091844C /* String+BytesConvert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36661C87F47F0091844C /* String+BytesConvert.swift */; };
 		41EE36951C87F5010091844C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36671C87F47F0091844C /* Utils.swift */; };
+		41EE36A01C8817110091844C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE369F1C8817110091844C /* main.swift */; };
+		41EE36A51C88185E0091844C /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36611C87F47F0091844C /* Record.swift */; };
+		41EE36A61C8818630091844C /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36571C87F47F0091844C /* Application.swift */; };
+		41EE36A71C8818630091844C /* RawInputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36581C87F47F0091844C /* RawInputStream.swift */; };
+		41EE36A81C8818630091844C /* RawOutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36591C87F47F0091844C /* RawOutputStream.swift */; };
+		41EE36A91C8818630091844C /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE365A1C87F47F0091844C /* Connection.swift */; };
+		41EE36AA1C8818630091844C /* DebugServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE365B1C87F47F0091844C /* DebugServer.swift */; };
+		41EE36AB1C8818630091844C /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE365C1C87F47F0091844C /* Environment.swift */; };
+		41EE36AC1C8818630091844C /* Exception.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE365D1C87F47F0091844C /* Exception.swift */; };
+		41EE36AD1C8818630091844C /* InputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE365E1C87F47F0091844C /* InputStream.swift */; };
+		41EE36AE1C8818630091844C /* OutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE365F1C87F47F0091844C /* OutputStream.swift */; };
+		41EE36AF1C8818630091844C /* ProtocolConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36601C87F47F0091844C /* ProtocolConstant.swift */; };
+		41EE36B01C8818630091844C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36621C87F47F0091844C /* Request.swift */; };
+		41EE36B11C8818630091844C /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36631C87F47F0091844C /* Server.swift */; };
+		41EE36B21C8818630091844C /* SingleConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36641C87F47F0091844C /* SingleConnection.swift */; };
+		41EE36B31C8818630091844C /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36651C87F47F0091844C /* Socket.swift */; };
+		41EE36B41C8818630091844C /* String+BytesConvert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36661C87F47F0091844C /* String+BytesConvert.swift */; };
+		41EE36B51C8818630091844C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE36671C87F47F0091844C /* Utils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -55,14 +86,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		41EE369B1C8817110091844C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		417C64561C88764E001ACD44 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		41BD5BC31C888B8800E8015E /* InputStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputStorage.swift; sourceTree = "<group>"; };
+		41BD5BC51C888C0A00E8015E /* OutputStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutputStorage.swift; sourceTree = "<group>"; };
+		41BD5BC71C888EA200E8015E /* BufferedInputStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BufferedInputStorage.swift; sourceTree = "<group>"; };
+		41BD5BC91C888EAB00E8015E /* BufferedOutputStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BufferedOutputStorage.swift; sourceTree = "<group>"; };
 		41EE364C1C87F4740091844C /* XcodeProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = XcodeProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		41EE364F1C87F4740091844C /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		41EE36571C87F47F0091844C /* Application.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
-		41EE36581C87F47F0091844C /* BufferedInputStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BufferedInputStream.swift; sourceTree = "<group>"; };
-		41EE36591C87F47F0091844C /* BufferedOutputStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BufferedOutputStream.swift; sourceTree = "<group>"; };
+		41EE36581C87F47F0091844C /* RawInputStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RawInputStream.swift; sourceTree = "<group>"; };
+		41EE36591C87F47F0091844C /* RawOutputStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RawOutputStream.swift; sourceTree = "<group>"; };
 		41EE365A1C87F47F0091844C /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
 		41EE365B1C87F47F0091844C /* DebugServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugServer.swift; sourceTree = "<group>"; };
 		41EE365C1C87F47F0091844C /* Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
@@ -80,6 +125,8 @@
 		41EE367D1C87F4F20091844C /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		41EE367F1C87F4F20091844C /* UnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
 		41EE36811C87F4F20091844C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		41EE369D1C8817110091844C /* SimpleClient */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SimpleClient; sourceTree = BUILT_PRODUCTS_DIR; };
+		41EE369F1C8817110091844C /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +144,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		41EE369A1C8817110091844C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -106,6 +160,7 @@
 				41EE36561C87F47F0091844C /* Sources */,
 				41EE364E1C87F4740091844C /* XcodeProject */,
 				41EE367E1C87F4F20091844C /* UnitTests */,
+				41EE369E1C8817110091844C /* SimpleClient */,
 				41EE364D1C87F4740091844C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -115,6 +170,7 @@
 			children = (
 				41EE364C1C87F4740091844C /* XcodeProject */,
 				41EE367D1C87F4F20091844C /* UnitTests.xctest */,
+				41EE369D1C8817110091844C /* SimpleClient */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -131,8 +187,12 @@
 			isa = PBXGroup;
 			children = (
 				41EE36571C87F47F0091844C /* Application.swift */,
-				41EE36581C87F47F0091844C /* BufferedInputStream.swift */,
-				41EE36591C87F47F0091844C /* BufferedOutputStream.swift */,
+				41EE36581C87F47F0091844C /* RawInputStream.swift */,
+				41EE36591C87F47F0091844C /* RawOutputStream.swift */,
+				41BD5BC31C888B8800E8015E /* InputStorage.swift */,
+				41BD5BC51C888C0A00E8015E /* OutputStorage.swift */,
+				41BD5BC71C888EA200E8015E /* BufferedInputStorage.swift */,
+				41BD5BC91C888EAB00E8015E /* BufferedOutputStorage.swift */,
 				41EE365A1C87F47F0091844C /* Connection.swift */,
 				41EE365B1C87F47F0091844C /* DebugServer.swift */,
 				41EE365C1C87F47F0091844C /* Environment.swift */,
@@ -147,6 +207,7 @@
 				41EE36651C87F47F0091844C /* Socket.swift */,
 				41EE36661C87F47F0091844C /* String+BytesConvert.swift */,
 				41EE36671C87F47F0091844C /* Utils.swift */,
+				417C64561C88764E001ACD44 /* Log.swift */,
 			);
 			name = Sources;
 			path = ../Sources;
@@ -159,6 +220,14 @@
 				41EE36811C87F4F20091844C /* Info.plist */,
 			);
 			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		41EE369E1C8817110091844C /* SimpleClient */ = {
+			isa = PBXGroup;
+			children = (
+				41EE369F1C8817110091844C /* main.swift */,
+			);
+			path = SimpleClient;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,6 +267,23 @@
 			productReference = 41EE367D1C87F4F20091844C /* UnitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		41EE369C1C8817110091844C /* SimpleClient */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 41EE36A11C8817110091844C /* Build configuration list for PBXNativeTarget "SimpleClient" */;
+			buildPhases = (
+				41EE36991C8817110091844C /* Sources */,
+				41EE369A1C8817110091844C /* Frameworks */,
+				41EE369B1C8817110091844C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SimpleClient;
+			productName = SimpleClient;
+			productReference = 41EE369D1C8817110091844C /* SimpleClient */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -212,6 +298,9 @@
 						CreatedOnToolsVersion = 7.2;
 					};
 					41EE367C1C87F4F20091844C = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					41EE369C1C8817110091844C = {
 						CreatedOnToolsVersion = 7.2;
 					};
 				};
@@ -230,6 +319,7 @@
 			targets = (
 				41EE364B1C87F4740091844C /* XcodeProject */,
 				41EE367C1C87F4F20091844C /* UnitTests */,
+				41EE369C1C8817110091844C /* SimpleClient */,
 			);
 		};
 /* End PBXProject section */
@@ -252,17 +342,22 @@
 				41EE36771C87F47F0091844C /* String+BytesConvert.swift in Sources */,
 				41EE36761C87F47F0091844C /* Socket.swift in Sources */,
 				41EE36741C87F47F0091844C /* Server.swift in Sources */,
-				41EE36691C87F47F0091844C /* BufferedInputStream.swift in Sources */,
+				41EE36691C87F47F0091844C /* RawInputStream.swift in Sources */,
 				41EE36731C87F47F0091844C /* Request.swift in Sources */,
 				41EE366E1C87F47F0091844C /* Exception.swift in Sources */,
 				41EE36721C87F47F0091844C /* Record.swift in Sources */,
+				41BD5BC81C888EA200E8015E /* BufferedInputStorage.swift in Sources */,
 				41EE36701C87F47F0091844C /* OutputStream.swift in Sources */,
+				41BD5BCA1C888EAB00E8015E /* BufferedOutputStorage.swift in Sources */,
 				41EE36751C87F47F0091844C /* SingleConnection.swift in Sources */,
-				41EE366A1C87F47F0091844C /* BufferedOutputStream.swift in Sources */,
+				41BD5BC41C888B8800E8015E /* InputStorage.swift in Sources */,
+				41EE366A1C87F47F0091844C /* RawOutputStream.swift in Sources */,
 				41EE366C1C87F47F0091844C /* DebugServer.swift in Sources */,
 				41EE36781C87F47F0091844C /* Utils.swift in Sources */,
 				41EE366F1C87F47F0091844C /* InputStream.swift in Sources */,
 				41EE366D1C87F47F0091844C /* Environment.swift in Sources */,
+				41BD5BC61C888C0A00E8015E /* OutputStorage.swift in Sources */,
+				417C64571C88764E001ACD44 /* Log.swift in Sources */,
 				41EE366B1C87F47F0091844C /* Connection.swift in Sources */,
 				41EE36681C87F47F0091844C /* Application.swift in Sources */,
 				41EE36711C87F47F0091844C /* ProtocolConstant.swift in Sources */,
@@ -275,23 +370,56 @@
 			buildActionMask = 2147483647;
 			files = (
 				41EE36851C87F5010091844C /* Application.swift in Sources */,
-				41EE36861C87F5010091844C /* BufferedInputStream.swift in Sources */,
-				41EE36871C87F5010091844C /* BufferedOutputStream.swift in Sources */,
+				41BD5BD21C88A20300E8015E /* BufferedOutputStorage.swift in Sources */,
+				41EE36861C87F5010091844C /* RawInputStream.swift in Sources */,
+				41EE36871C87F5010091844C /* RawOutputStream.swift in Sources */,
 				41EE36881C87F5010091844C /* Connection.swift in Sources */,
+				41BD5BD01C88A20300E8015E /* OutputStorage.swift in Sources */,
 				41EE36891C87F5010091844C /* DebugServer.swift in Sources */,
 				41EE368A1C87F5010091844C /* Environment.swift in Sources */,
 				41EE368B1C87F5010091844C /* Exception.swift in Sources */,
 				41EE368C1C87F5010091844C /* InputStream.swift in Sources */,
 				41EE368D1C87F5010091844C /* OutputStream.swift in Sources */,
 				41EE368E1C87F5010091844C /* ProtocolConstant.swift in Sources */,
+				41BD5BCF1C88A20300E8015E /* InputStorage.swift in Sources */,
 				41EE368F1C87F5010091844C /* Record.swift in Sources */,
 				41EE36901C87F5010091844C /* Request.swift in Sources */,
+				41BD5BD11C88A20300E8015E /* BufferedInputStorage.swift in Sources */,
 				41EE36911C87F5010091844C /* Server.swift in Sources */,
 				41EE36921C87F5010091844C /* SingleConnection.swift in Sources */,
 				41EE36931C87F5010091844C /* Socket.swift in Sources */,
 				41EE36941C87F5010091844C /* String+BytesConvert.swift in Sources */,
 				41EE36951C87F5010091844C /* Utils.swift in Sources */,
 				41EE36801C87F4F20091844C /* UnitTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		41EE36991C8817110091844C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41EE36B41C8818630091844C /* String+BytesConvert.swift in Sources */,
+				41BD5BCE1C88A20100E8015E /* BufferedOutputStorage.swift in Sources */,
+				41EE36B31C8818630091844C /* Socket.swift in Sources */,
+				41EE36B11C8818630091844C /* Server.swift in Sources */,
+				41EE36A61C8818630091844C /* Application.swift in Sources */,
+				41BD5BCC1C88A20100E8015E /* OutputStorage.swift in Sources */,
+				41EE36B01C8818630091844C /* Request.swift in Sources */,
+				41EE36AB1C8818630091844C /* Environment.swift in Sources */,
+				41EE36A91C8818630091844C /* Connection.swift in Sources */,
+				41EE36AC1C8818630091844C /* Exception.swift in Sources */,
+				41EE36B21C8818630091844C /* SingleConnection.swift in Sources */,
+				41EE36AD1C8818630091844C /* InputStream.swift in Sources */,
+				41BD5BCB1C88A20100E8015E /* InputStorage.swift in Sources */,
+				41EE36A81C8818630091844C /* RawOutputStream.swift in Sources */,
+				41EE36B51C8818630091844C /* Utils.swift in Sources */,
+				41BD5BCD1C88A20100E8015E /* BufferedInputStorage.swift in Sources */,
+				41EE36A51C88185E0091844C /* Record.swift in Sources */,
+				41EE36A01C8817110091844C /* main.swift in Sources */,
+				41EE36AE1C8818630091844C /* OutputStream.swift in Sources */,
+				41EE36AF1C8818630091844C /* ProtocolConstant.swift in Sources */,
+				41EE36A71C8818630091844C /* RawInputStream.swift in Sources */,
+				41EE36AA1C8818630091844C /* DebugServer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,6 +542,20 @@
 			};
 			name = Release;
 		};
+		41EE36A21C8817110091844C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		41EE36A31C8817110091844C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -433,6 +575,7 @@
 				41EE36551C87F4740091844C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		41EE36821C87F4F20091844C /* Build configuration list for PBXNativeTarget "UnitTests" */ = {
 			isa = XCConfigurationList;
@@ -441,6 +584,16 @@
 				41EE36841C87F4F20091844C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		41EE36A11C8817110091844C /* Build configuration list for PBXNativeTarget "SimpleClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				41EE36A21C8817110091844C /* Debug */,
+				41EE36A31C8817110091844C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -22,7 +22,7 @@ internal enum RecordType: UInt8 {
     case UNKNOWN_TYPE = 11
 }
 
-internal enum Role: UInt8 {
+internal enum Role: UInt16 {
     case RESPONDER = 1
     case FILTER = 2
     case AUTHORIZER = 3

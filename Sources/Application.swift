@@ -8,9 +8,9 @@
 import Foundation
 
 public typealias Status = String
-public typealias RespondWriter = (String, String) throws -> Void
-public typealias RespondHeaders = (Status , [String : String]) -> RespondWriter
+public typealias RespondWriter = (String, String?) throws -> Void
+public typealias RespondHeaders = (status: String, headers: [String : String]) -> RespondWriter
 
 public protocol Application {
-    func main(env : Environment , respondHeaders : RespondHeaders) -> CustomStringConvertible?
+    func main(env : Environment , respondHeaders : RespondHeaders) -> UInt8
 }

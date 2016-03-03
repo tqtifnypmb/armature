@@ -25,7 +25,7 @@ internal final class Socket {
     class func createBoundTcpSocket(addr: String, port: UInt16, maxListenQueue: Int32 = SOMAXCONN) throws -> Socket {
         var addrToBind = sockaddr_in()
         addrToBind.sin_family = sa_family_t(AF_INET)
-        addrToBind.sin_port = Socket.htons(port)
+        addrToBind.sin_port = port.bigEndian
         addrToBind.sin_addr = in_addr(s_addr: inet_addr(addr))
         addrToBind.sin_len = UInt8(sizeof(sockaddr_in))
         addrToBind.sin_zero = (0, 0, 0, 0, 0, 0, 0, 0)
@@ -34,7 +34,7 @@ internal final class Socket {
         return try Socket.doCreateSocket(AF_INET, addrToBind: toBind, addrLen: socklen_t(sizeof(sockaddr_in)), maxListenQueue: maxListenQueue)
     }
     
-    class func createBoundUnixSocket(path: String, port: UInt16, maxListenQueue: Int32 = SOMAXCONN) throws -> Socket {
+    class func createBoundUnixSocket(path: String, maxListenQueue: Int32 = SOMAXCONN) throws -> Socket {
         var addrToBind = sockaddr_un()
 
         let pathLen = path.withCString { Int(strlen($0)) }
@@ -67,11 +67,24 @@ internal final class Socket {
         return conn
     }
     
+    // Poll on listened socket wait for connection
+    // if timeout return false
     func waitForConnection(timeout: UnsafeMutablePointer<timeval>) throws -> Bool {
         assert(self.socketFd != -1)
         var read_set = fd_set()
         read_set.fds_bits.0 = self.socketFd
-        let nready = select(self.socketFd + 1, &read_set, nil, nil, timeout)
+        
+        var nready: Int32
+        if timeout == nil {
+            var t = timeval()
+            t.tv_sec = 0
+            //FIXME
+            // To make select block indefinitely, we have can't just pass nil to timeout
+            nready = select(self.socketFd + 1, &read_set, nil, nil, &t)
+        } else {
+            nready = select(self.socketFd + 1, &read_set, nil, nil, timeout)
+        }
+        
         if (nready == -1) {
             throw SocketError.SelectFailed(Socket.getErrorDescription())
         }
@@ -87,7 +100,7 @@ internal final class Socket {
     class func getErrorDescription() -> String {
         return String.fromCString(strerror(errno)) ?? "Error \(errno)"
     }
-    
+
     private class func doCreateSocket(domain: Int32, addrToBind: UnsafeMutablePointer<sockaddr>, addrLen: socklen_t, maxListenQueue: Int32) throws -> Socket {
         let socketFd = socket(domain, SOCK_STREAM, 0)
         guard socketFd != -1 else {
@@ -116,9 +129,5 @@ internal final class Socket {
     
     private class func socketaddr_cast(p: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<sockaddr> {
         return UnsafeMutablePointer<sockaddr>(p)
-    }
-    
-    private class func htons(h: UInt16) -> UInt16 {
-        return Utils.isLittleEndian() ? _OSSwapInt16(h) : h
     }
 }
