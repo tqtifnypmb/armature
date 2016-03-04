@@ -1,6 +1,8 @@
 ##Introduction
 
-Armature is a Swift FastCGI/CGI server inspired by Python WSGI[https://www.python.org/dev/peps/pep-3333/]. It's goal is to make writing FastCGI/CGI application as easy as writing a normal program. 
+Armature is a Swift FastCGI/CGI server inspired by Python WSGI[https://www.python.org/dev/peps/pep-3333/]. It's goal is :
+- [x] To make writing FastCGI/CGI application as easy as writing a normal program.
+- [x] Provide Python like interface
 
 ## Work in Progress
 
