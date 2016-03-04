@@ -45,3 +45,10 @@ Currently Armature has not heavily tested yet. It's has been tested on OSX 10.11
 ## Attributions
 
 This project is base on [flup](https://pypi.python.org/pypi/flup) and [web.py](http://webpy.org). Go checkout and star their repos.
+
+## TODO
+
+- Support abort requests
+- Support mutiplex request
+- Support multi-connections
+- More tests
