@@ -34,6 +34,10 @@ Run it
 server.run(myApp)
 ```
 
+## Assumpsions
+
+As a programmer who wants to write a CGI/FastCGI application, I assume you know about how CGI/FastCGI works. So Armature's goal is to provider enough features but not too much, We want to make it easy and clean.
+
 ## Compatibility
 
 Currently Armature has not heavily tested yet. It's has been tested on OSX 10.11 , lighttpd.
