@@ -9,19 +9,31 @@
 import Foundation
 
 class MyApp: Application {
-    func main(env: Environment, respondHeaders: RespondHeaders) -> Int32 {
-        let writer = respondHeaders(status: "200", headers: ["Content-Type": "text/html" /*, "Content-Length": "200"*/])
+    func main(env: Environment, responder: Responder) -> Int32 {
+        let writer = responder(status: "200", headers: ["Content-Type": "text/html", "My": "haha"])
         do {
-            try writer("<!DOCTYPE html><html><head><meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">from armature fastcgi</head><body>This's my job", nil)
-            if env.STDIN.contentLength > 0 {
-                var buffer = [UInt8].init(count: Int(env.STDIN.contentLength), repeatedValue: 0)
-                try env.STDIN.readInto(&buffer)
-                if let str = String(bytes: buffer, encoding: NSUTF8StringEncoding) {
-                    try writer(str, nil)
+            let form = "<form action=\"/armature/fdsdfdf\" method=\"POST\">" +
+            "<input name=\"MAX_FILE_SIZE\" value=\"100000\" />" +
+            "Choose a file to upload: <input name=\"uploadedfile\" type=\"file\" /><br/>" +
+            "<input type=\"submit\" value=\"Upload File\" />" +
+            "</form>"
+            try writer("<!DOCTYPE html><html><head><meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">from armature fastcgi</head><body>", nil)
+            try writer(env.request.params.description, nil)
+            try writer(form , nil)
+            
+            
+            if env.CONTENT_LENGTH > 0 {
+                try writer("===>" + String(env.CONTENT_LENGTH), nil)
+                
+                var input = [UInt8].init(count: Int(env.CONTENT_LENGTH), repeatedValue: 0)
+                try env.STDIN.readInto(&input)
+                if let cnt = String(bytes: input, encoding: NSUTF8StringEncoding) {
+                    try writer(cnt, nil)
                 }
             }
-            try writer(env.request.params.description, nil)
+
             try writer("</body></html>", nil)
+            
         } catch {
             // FIXME
             assert(false)
@@ -31,7 +43,8 @@ class MyApp: Application {
 }
 
 var addr = "/Users/tqtifnypmb/lighttpd/armature"
-let server = DebugServer(addr: addr, port: 9999)
+let server = SingleServer()
 let app = MyApp()
+server.debug = true
+server.unix_socket_path = "/Users/tqtifnypmb/lighttpd/armature"
 server.run(app)
-//assert(false)

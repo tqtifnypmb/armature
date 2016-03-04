@@ -55,9 +55,6 @@
 		4189E6191C893C190077BA96 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E41C893C190077BA96 /* Request.swift */; };
 		4189E61A1C893C190077BA96 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E41C893C190077BA96 /* Request.swift */; };
 		4189E61B1C893C190077BA96 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E41C893C190077BA96 /* Request.swift */; };
-		4189E61C1C893C190077BA96 /* DebugServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E61C893C190077BA96 /* DebugServer.swift */; };
-		4189E61D1C893C190077BA96 /* DebugServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E61C893C190077BA96 /* DebugServer.swift */; };
-		4189E61E1C893C190077BA96 /* DebugServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E61C893C190077BA96 /* DebugServer.swift */; };
 		4189E61F1C893C190077BA96 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E71C893C190077BA96 /* Server.swift */; };
 		4189E6201C893C190077BA96 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E71C893C190077BA96 /* Server.swift */; };
 		4189E6211C893C190077BA96 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E71C893C190077BA96 /* Server.swift */; };
@@ -70,6 +67,7 @@
 		4189E6281C893C190077BA96 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5EB1C893C190077BA96 /* Utils.swift */; };
 		4189E6291C893C190077BA96 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5EB1C893C190077BA96 /* Utils.swift */; };
 		4189E62A1C893C190077BA96 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5EB1C893C190077BA96 /* Utils.swift */; };
+		418E0F261C89E6110007475F /* SingleServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418E0F251C89E6110007475F /* SingleServer.swift */; };
 		41EE36501C87F4740091844C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE364F1C87F4740091844C /* main.swift */; };
 		41EE36801C87F4F20091844C /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE367F1C87F4F20091844C /* UnitTests.swift */; };
 		41EE36A01C8817110091844C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE369F1C8817110091844C /* main.swift */; };
@@ -113,11 +111,11 @@
 		4189E5E21C893C190077BA96 /* ProtocolConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtocolConstant.swift; sourceTree = "<group>"; };
 		4189E5E31C893C190077BA96 /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		4189E5E41C893C190077BA96 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
-		4189E5E61C893C190077BA96 /* DebugServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugServer.swift; sourceTree = "<group>"; };
 		4189E5E71C893C190077BA96 /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		4189E5E91C893C190077BA96 /* Socket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
 		4189E5EA1C893C190077BA96 /* String+BytesConvert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+BytesConvert.swift"; sourceTree = "<group>"; };
 		4189E5EB1C893C190077BA96 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		418E0F251C89E6110007475F /* SingleServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleServer.swift; sourceTree = "<group>"; };
 		41EE364C1C87F4740091844C /* XcodeProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = XcodeProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		41EE364F1C87F4740091844C /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		41EE367D1C87F4F20091844C /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -219,7 +217,7 @@
 		4189E5E51C893C190077BA96 /* Server */ = {
 			isa = PBXGroup;
 			children = (
-				4189E5E61C893C190077BA96 /* DebugServer.swift */,
+				418E0F251C89E6110007475F /* SingleServer.swift */,
 				4189E5E71C893C190077BA96 /* Server.swift */,
 			);
 			path = Server;
@@ -410,7 +408,6 @@
 			files = (
 				4189E5FE1C893C190077BA96 /* InputStream.swift in Sources */,
 				4189E5EC1C893C190077BA96 /* Application.swift in Sources */,
-				4189E61C1C893C190077BA96 /* DebugServer.swift in Sources */,
 				4189E5F51C893C190077BA96 /* Exception.swift in Sources */,
 				4189E6251C893C190077BA96 /* String+BytesConvert.swift in Sources */,
 				4189E6101C893C190077BA96 /* Environment.swift in Sources */,
@@ -418,6 +415,7 @@
 				4189E6281C893C190077BA96 /* Utils.swift in Sources */,
 				4189E5FB1C893C190077BA96 /* InputStorage.swift in Sources */,
 				4189E6161C893C190077BA96 /* Record.swift in Sources */,
+				418E0F261C89E6110007475F /* SingleServer.swift in Sources */,
 				4189E6191C893C190077BA96 /* Request.swift in Sources */,
 				4189E6131C893C190077BA96 /* ProtocolConstant.swift in Sources */,
 				4189E5EF1C893C190077BA96 /* Connection.swift in Sources */,
@@ -439,7 +437,6 @@
 			files = (
 				4189E5FF1C893C190077BA96 /* InputStream.swift in Sources */,
 				4189E5ED1C893C190077BA96 /* Application.swift in Sources */,
-				4189E61D1C893C190077BA96 /* DebugServer.swift in Sources */,
 				4189E5F61C893C190077BA96 /* Exception.swift in Sources */,
 				4189E6261C893C190077BA96 /* String+BytesConvert.swift in Sources */,
 				4189E6111C893C190077BA96 /* Environment.swift in Sources */,
@@ -468,7 +465,6 @@
 			files = (
 				4189E6001C893C190077BA96 /* InputStream.swift in Sources */,
 				4189E5EE1C893C190077BA96 /* Application.swift in Sources */,
-				4189E61E1C893C190077BA96 /* DebugServer.swift in Sources */,
 				4189E5F71C893C190077BA96 /* Exception.swift in Sources */,
 				4189E6271C893C190077BA96 /* String+BytesConvert.swift in Sources */,
 				4189E6121C893C190077BA96 /* Environment.swift in Sources */,

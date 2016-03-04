@@ -14,6 +14,7 @@ import Foundation
 //     - Deliver request to server
 //     - throws all socket error and 
 //       data error to server
+//     - Responsible to under network handling
 public protocol Connection {
     init(sock: Int32, server: Server)
     func loop(once: Bool)

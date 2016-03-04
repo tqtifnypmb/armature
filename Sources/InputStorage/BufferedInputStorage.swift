@@ -10,6 +10,7 @@ import Foundation
 
 class BufferedInputStorage: InputStorage {
     
+    // This number come from flup
     private let maxBuffer = 102400 - 8192
     private var data: [UInt8] = []
     private let connection: Connection
@@ -27,9 +28,7 @@ class BufferedInputStorage: InputStorage {
         
         let maxToRead = min(Int(self.contentLength), buffer.count)
         while self.data.count < maxToRead {
-            // Pull more data
-            // FIXME 
-            // What if there're more than one stdin record
+            // Read more data
             self.connection.loop(true)
         }
        

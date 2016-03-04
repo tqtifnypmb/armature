@@ -197,8 +197,13 @@ public class SingleConnection: Connection {
     }
     
     private func handleBeginRequest(record: Record) throws {
-        let req = try Request(record: record, conn: self)
-        self.curRequest = req
+        do {
+            let req = try Request(record: record, conn: self)
+            self.curRequest = req
+        } catch DataError.UnknownRole {
+            // let unknown role error throws will brake down the connection
+            return
+        }
     }
     
     private func handleData(record: Record) {

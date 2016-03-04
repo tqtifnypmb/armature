@@ -58,4 +58,20 @@ class UnitTests: XCTestCase {
         }
         XCTAssertEqual(nPair, toEncode)
     }
+    
+    func testBufferedInputStorage() {
+        let ser = DebugServer(addr: "", port: 10)
+        let f = BufferedInputStorage(conn: SingleConnection(sock: 1, server: ser))
+        f.contentLength = 34
+        let buffer = [UInt8].init(count: 34, repeatedValue: 1)
+        f.addData(buffer)
+        var readBack = [UInt8].init(count: 34, repeatedValue: 0)
+        do {
+            try f.readInto(&readBack)
+        } catch {
+            
+        }
+        
+        XCTAssertEqual(buffer, readBack)
+    }
 }

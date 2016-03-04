@@ -18,7 +18,6 @@ public final class Record {
     class func readFrom(conn: Connection) throws -> Record? {
         var buffer = [UInt8].init(count: FCGI_HEADER_LEN, repeatedValue: 0)
         try conn.readInto(&buffer)
-        //try Utils.readN(sock, buffer: &buffer, n: UInt32(FCGI_HEADER_LEN))
     
         let record = Record()
         record.requestId = (UInt16(buffer[2]) << 8) + UInt16(buffer[3])
@@ -30,14 +29,13 @@ public final class Record {
         } else {
             // Ignore unsupport request type
             // FIXME log may be necessary
-            //try skip(sock, len: UInt32(record.contentLength) + paddingLength)
+            try skip(conn, len: UInt32(record.contentLength) + paddingLength)
             return nil
         }
         
         if record.contentLength > 0 {
             var data = [UInt8].init(count: Int(record.contentLength), repeatedValue: 0)
             try conn.readInto(&data)
-            //try Utils.readN(sock, buffer: &data, n: UInt32(record.contentLength))
             record.contentData = data
         }
         
@@ -59,7 +57,6 @@ public final class Record {
     
     private class func skip(conn: Connection, len: UInt32) throws {
         var ignore = [UInt8].init(count: Int(len), repeatedValue: 0)
-        //try Utils.readN(sock, buffer: &ignore, n: len)
         try conn.readInto(&ignore)
     }
     
@@ -79,17 +76,14 @@ public final class Record {
         heads[6] = paddingLength                                // Paddign Length
         heads[7] = 0                                            // Reserve
         
-        // FIXME  Consider byte order !!!
+        // FIXME  Is byte order important??
         try conn.write(&heads)
-        //try Utils.writeN(sock, data: &heads, n: UInt32(FCGI_HEADER_LEN))
         if self.contentLength != 0 {
             try conn.write(&self.contentData!)
-            //try Utils.writeN(sock, data: &self.contentData!, n: UInt32(self.contentLength))
         }
         if paddingLength > 0 {
             var padding = [UInt8].init(count: Int(paddingLength), repeatedValue: 0)
             try conn.write(&padding)
-            //try Utils.writeN(sock, data: &padding, n: UInt32(paddingLength))
         }
     }
     
@@ -122,6 +116,7 @@ public final class Record {
             try Utils.writeN(sock, data: &padding, n: UInt32(paddingLength))
         }
     }
+    
     private func calPadding(n: UInt16, boundary: UInt16) -> UInt16 {
         guard n != 0 else {
             return boundary

@@ -70,7 +70,7 @@ internal final class Utils {
             }
             
             var name: String?
-            var value: String?
+            var value: String = ""
             if nameLength > 0 {
                 let nameBytes = dataToParse[dataToParse.startIndex.advancedBy(index) ... dataToParse.startIndex.advancedBy(index + Int(nameLength) - 1)]
                 name = String.init(bytes: nameBytes, encoding: NSUTF8StringEncoding)
@@ -78,14 +78,14 @@ internal final class Utils {
             }
             if valueLength > 0 {
                 let valueBytes = dataToParse[dataToParse.startIndex.advancedBy(index) ... dataToParse.startIndex.advancedBy(index + Int(valueLength) - 1)]
-                value = String.init(bytes: valueBytes, encoding: NSUTF8StringEncoding)
+                if let v = String.init(bytes: valueBytes, encoding: NSUTF8StringEncoding) {
+                    value = v
+                }
                 index += Int(valueLength)
-            } else {
-                value = ""
             }
             
             if let name = name {
-                params[name] = value
+                params[name.uppercaseString] = value
             }
         }
         return params

@@ -26,16 +26,17 @@ public class SingleServer: Server {
         self.maxRequests = self.maxConnections
     }
     
+    // For debug only
     public var debug = false;
+    public var unix_socket_path = ""
     
     public func run(app: Application) {
         self.app = app
         
         if self.debug {
             do {
-                unlink("/Users/tqtifnypmb/lighttpd/armature")
-                let path = "/Users/tqtifnypmb/lighttpd/armature"
-                self.sock = try Socket.createBoundUnixSocket(path)
+                unlink(unix_socket_path)
+                self.sock = try Socket.createBoundUnixSocket(unix_socket_path)
             } catch {
                 print(error)
                 assert(false)

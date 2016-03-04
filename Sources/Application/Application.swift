@@ -9,8 +9,8 @@ import Foundation
 
 public typealias Status = String
 public typealias RespondWriter = (String, String?) throws -> Void
-public typealias RespondHeaders = (status: String, headers: [String : String]) -> RespondWriter
+public typealias Responder = (status: String, headers: [String : String]) -> RespondWriter
 
 public protocol Application {
-    func main(env : Environment , respondHeaders : RespondHeaders) -> Int32
+    func main(env : Environment , responder : Responder) -> Int32
 }
