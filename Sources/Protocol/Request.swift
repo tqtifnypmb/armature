@@ -19,6 +19,7 @@ public class Request {
     var DATA: [UInt8]?
     var params: [String : String] = [:]
     var connection: Connection!
+    var aborted = false
     
     init(record: Record, conn: Connection) throws {
         assert(record.type == .BEGIN_REQUEST)
@@ -27,17 +28,21 @@ public class Request {
         self.STDIN = BufferedInputStorage(conn: self.connection)
         self.STDOUT = BufferedOutputStorage(conn: self.connection, reqId: record.requestId, isErr: false)
         self.STDERR = BufferedOutputStorage(conn: self.connection, reqId: record.requestId, isErr: true)
+        self.requestId = record.requestId
         
         guard let cntData = record.contentData else {
             throw DataError.InvalidData
         }
-        guard let role = Role(rawValue: UInt16(cntData[0]) << 8 + UInt16(cntData[1])) else {
-            throw DataError.UnknownRole("Unknown role \(UInt16(cntData[0]) << 8 + UInt16(cntData[1]))")
-        }
-        
-        self.requestId = record.requestId
-        self.role = role
         self.flags = cntData[2]
+        
+        guard let role = Role(rawValue: UInt16(cntData[0]) << 8 + UInt16(cntData[1])) else {
+            // Unknown role
+            try self.finishHandling(0, protoStatus: ProtocolStatus.UNKNOWN_ROLE)
+            
+            // throw a error to finish whole handling process
+            throw DataError.UnknownRole("Unknonwn role \(UInt16(cntData[0]) << 8 + UInt16(cntData[1]))")
+        }
+        self.role = role
     }
     
     func setParams(params: [String : String]) {
@@ -45,6 +50,10 @@ public class Request {
         if let cnt = params["CONTENT_LENGTH"], let cntLen = UInt16(cnt) {
             self.STDIN.contentLength = cntLen
         }
+    }
+    
+    func abort() {
+        
     }
     
     func finishHandling(appStatus: Int32, protoStatus: ProtocolStatus) throws {
@@ -66,5 +75,9 @@ public class Request {
         try completeRecord.writeTo(self.connection)
         try self.STDOUT.flush()
         try self.STDERR.flush()
+        
+        if self.flags & FCGI_KEEP_CONN == 0 {
+            self.connection.halt()
+        }
     }
 }

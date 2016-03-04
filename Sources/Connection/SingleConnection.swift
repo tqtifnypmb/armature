@@ -11,7 +11,7 @@ import Foundation
 public class SingleConnection: Connection {
     public let sock: Int32
     var stop = false
-    var request: Request?
+    var curRequest: Request?
     
     public var inputStreamType: InputStream.Type = RawInputStream.self
     public var outputStreamType: OutputStream.Type = RawOutputStream.self
@@ -50,6 +50,15 @@ public class SingleConnection: Connection {
         try self.outputStream.write(&data)
     }
     
+    public func abortRequest(reqId: UInt16) throws {
+        self.halt()
+    }
+    
+    public func halt() {
+        close(self.sock)
+        self.stop = true
+    }
+    
     private func waitForData(timeout: UnsafeMutablePointer<timeval>) throws -> Bool {
         var read_set = fd_set()
         read_set.fds_bits.0 = self.sock
@@ -79,7 +88,7 @@ public class SingleConnection: Connection {
             break
             
         case .ABORT_REQUEST:
-            self.handleAbortRequest(record)
+            try self.handleAbortRequest(record)
             break
             
         case .PARAMS:
@@ -92,6 +101,10 @@ public class SingleConnection: Connection {
             
         case .BEGIN_REQUEST:
             try self.handleBeginRequest(record)
+            break
+            
+        case .DATA:
+            self.handleData(record)
             break
             
         default:
@@ -137,11 +150,13 @@ public class SingleConnection: Connection {
         try ret.writeTo(self)
     }
     
-    private func handleAbortRequest(record: Record) {
+    private func handleAbortRequest(record: Record) throws {
+        //Just close the connection
+        try self.abortRequest(record.requestId)
     }
     
     private func handleParams(record: Record) throws {
-        guard let req = self.request else {
+        guard let req = self.curRequest else {
             // Current request isn't valid maybe something wrong
             // in data sent from server
             return
@@ -151,7 +166,7 @@ public class SingleConnection: Connection {
             // A empty params is sent
             // tick the request
             try self.server.handleRequest(req)
-            self.request = nil
+            self.curRequest = nil
             return
         }
         
@@ -160,7 +175,7 @@ public class SingleConnection: Connection {
     }
     
     private func handleStdIn(record: Record) {
-        guard let req = self.request else {
+        guard let req = self.curRequest else {
             // Current request isn't valid maybe something wrong
             // in data sent from server
             return
@@ -173,6 +188,16 @@ public class SingleConnection: Connection {
     
     private func handleBeginRequest(record: Record) throws {
         let req = try Request(record: record, conn: self)
-        self.request = req
+        self.curRequest = req
+    }
+    
+    private func handleData(record: Record) {
+        guard let req = self.curRequest else {
+            return
+        }
+        
+        if record.contentLength > 0, let cntData = record.contentData {
+            req.DATA = cntData
+        }
     }
 }

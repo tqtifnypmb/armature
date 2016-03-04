@@ -8,14 +8,6 @@
 
 import Foundation
 
-/*
-public protocol Connection{
-    var server: Server {get}
-    init(sock: Int32, server: Server)
-    func loop()
-}
-*/
-
 // Connection responsible to :
 //     - Input/Output
 //     - Construct request
@@ -25,6 +17,7 @@ public protocol Connection{
 public protocol Connection {
     init(sock: Int32, server: Server)
     func loop(once: Bool)
+    func halt()
     
     var sock: Int32 {get}
     var inputStreamType: InputStream.Type {get set}
@@ -32,4 +25,5 @@ public protocol Connection {
     
     func readInto(inout buffer: [UInt8]) throws -> Int
     func write(inout data: [UInt8]) throws
+    func abortRequest(reqId: UInt16) throws
 }
