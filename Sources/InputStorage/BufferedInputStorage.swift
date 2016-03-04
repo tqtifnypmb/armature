@@ -12,42 +12,39 @@ class BufferedInputStorage: InputStorage {
     
     private let maxBuffer = 102400 - 8192
     private var data: [UInt8] = []
-    private var pos = 0
     private let connection: Connection
-    public var contentLength: UInt16 = 0
+    internal var contentLength: UInt16 = 0
     required init(conn: Connection) {
         self.connection = conn
     }
     
     func readInto(inout buffer: [UInt8]) throws -> Int {
+        
+        // Application can read as much as contentLength stdin
         guard self.contentLength > 0 else {
             return 0
         }
         
         let maxToRead = min(Int(self.contentLength), buffer.count)
-        if self.data.count - pos < maxToRead {
+        while self.data.count < maxToRead {
+            // Pull more data
             // FIXME 
             // What if there're more than one stdin record
-            try self.connection.loop(true)
+            self.connection.loop(true)
         }
-        
-        buffer[buffer.startIndex ... buffer.endIndex] = self.data[self.data.startIndex + pos ... self.data.endIndex]
-        self.tryToShrinkBuffer()
+       
+        buffer[buffer.startIndex ... buffer.endIndex.predecessor()] = self.data[self.data.startIndex ... self.data.startIndex.advancedBy(Int(maxToRead - 1))]
+        self.tryToShrinkBuffer(maxToRead)
         self.contentLength -= UInt16(maxToRead)
+        
         return maxToRead
     }
     
     func addData(data: [UInt8]) {
         self.data.appendContentsOf(data)
-        if self.data.count > self.maxBuffer {
-            self.tryToShrinkBuffer()
-        }
     }
     
-    private func tryToShrinkBuffer() {
-        guard self.pos != 0 else {
-            return
-        }
-        self.data.removeFirst(self.pos)
+    private func tryToShrinkBuffer(len: Int) {
+        self.data.removeFirst(len)
     }
 }
