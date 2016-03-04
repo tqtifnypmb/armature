@@ -25,20 +25,26 @@ public class SingleConnection: Connection {
     }
     
     public func loop(once: Bool) {
+        defer {
+            if !once {
+                close(self.sock)
+            }
+        }
+        
         do {
             if once {
+                // Consider timeout
                 try waitForData(nil)
                 try processInput()
             } else {
                 self.inputStream = self.inputStreamType.init(sock: self.sock)
                 self.outputStream = self.outputStreamType.init(sock: self.sock)
-                while !stop {
+                while !self.stop {
                     try waitForData(nil)
                     try processInput()
                 }
             }
         } catch {
-            
         }
     }
     
@@ -55,7 +61,6 @@ public class SingleConnection: Connection {
     }
     
     public func halt() {
-        close(self.sock)
         self.stop = true
     }
     
@@ -165,6 +170,7 @@ public class SingleConnection: Connection {
         guard record.contentLength != 0 , let cntData = record.contentData else {
             // A empty params is sent
             // tick the request
+
             try self.server.handleRequest(req)
             self.curRequest = nil
             return
