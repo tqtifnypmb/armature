@@ -91,21 +91,17 @@ public class Environment {
     var STDIN: InputStorage {
         return self.request.STDIN
     }
-    /*
-    var STDOUT: OutputStream? {
-        return self.request.STDOUT
-    }
-    
-    var STDERR: OutputStream? {
-        return self.request.STDERR
-    }
-    */
+
     var DATA: [UInt8]? {
         return self.request.DATA
     }
     
     subscript(key: String) -> String? {
         return self.request.params[key]
+    }
+    
+    func extra(key: String) -> String? {
+        return self[key]
     }
     
     let request: Request

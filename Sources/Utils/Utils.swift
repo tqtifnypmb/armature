@@ -133,4 +133,8 @@ internal final class Utils {
     static func isLittleEndian() -> Bool {
         return Int(OSHostByteOrder()) == OSLittleEndian
     }
+    
+    static func encodeAppStatus(status: Int32) -> [UInt8] {
+        return [UInt8(UInt32(status) & 0xFF000000), UInt8(UInt32(status) & 0x00FF0000), UInt8(UInt32(status) & 0x0000FF00), UInt8(UInt32(status) & 0x000000FF)]
+    }
 }

@@ -9,8 +9,8 @@
 import Foundation
 
 class MyApp: Application {
-    func main(env: Environment, respondHeaders: RespondHeaders) -> Int8 {
-        let writer = respondHeaders(status: "200", headers: ["Content-Type": "text/html" , "Content-Length": "200"])
+    func main(env: Environment, respondHeaders: RespondHeaders) -> Int32 {
+        let writer = respondHeaders(status: "200", headers: ["Content-Type": "text/html" /*, "Content-Length": "200"*/])
         do {
             try writer("<!DOCTYPE html><html><head><meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">from armature fastcgi</head><body>This's my job", nil)
             if env.STDIN.contentLength > 0 {
@@ -20,6 +20,7 @@ class MyApp: Application {
                     try writer(str, nil)
                 }
             }
+            try writer(env.request.params.description, nil)
             try writer("</body></html>", nil)
         } catch {
             // FIXME

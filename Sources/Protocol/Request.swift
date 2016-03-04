@@ -8,11 +8,6 @@
 
 import Foundation
 
-internal enum DataError: ErrorType {
-    case UnknownRole(String)
-    case InvalidData
-}
-
 public class Request {
     var requestId: UInt16 = 0
     var role: Role = .RESPONDER
@@ -52,7 +47,7 @@ public class Request {
         }
     }
     
-    func finishHandling(appStatus: Int8, protoStatus: ProtocolStatus) throws {
+    func finishHandling(appStatus: Int32, protoStatus: ProtocolStatus) throws {
         try self.STDOUT.flush()
         try self.STDERR.flush()
         try self.STDOUT.writeEOF()
@@ -63,8 +58,11 @@ public class Request {
         let completeRecord = Record()
         completeRecord.requestId = self.requestId
         completeRecord.type = RecordType.END_REQUEST
-        completeRecord.contentLength = 2
-        completeRecord.contentData = [UInt8(appStatus), protoStatus.rawValue]
+        
+        var statusBytes = Utils.encodeAppStatus(appStatus)
+        statusBytes.appendContentsOf([protoStatus.rawValue])
+        completeRecord.contentData = statusBytes
+        completeRecord.contentLength = UInt16(statusBytes.count)
         try completeRecord.writeTo(self.connection)
         try self.STDOUT.flush()
         try self.STDERR.flush()

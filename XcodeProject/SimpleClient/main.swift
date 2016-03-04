@@ -82,6 +82,10 @@ try begin_req.writeTo(client.socketFd)
 try params.writeTo(client.socketFd)
 try emptyParams.writeTo(client.socketFd)
 
+try begin_req.writeTo(client.socketFd)
+try params.writeTo(client.socketFd)
+try emptyParams.writeTo(client.socketFd)
+
 var buffer = [UInt8].init(count: 8, repeatedValue: 0)
 print("===+++++++++====")
 while true {
