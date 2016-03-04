@@ -9,3 +9,7 @@ All kind of Pull requests are welcome.
 
 ## Badges
 [![PRs Welcome](https://img.shields.io/badge/prs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
+## Compatibility
+
+Currently Armature has not heavily tested yet. It's has been tested on OSX 10.11 , lighttpd.
