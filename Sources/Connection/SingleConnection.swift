@@ -19,6 +19,7 @@ public class SingleConnection: Connection {
     
     private var inputStream: InputStream!
     private var outputStream: OutputStream!
+    private let isMultiplex = 0
     required public init(sock: Int32, server: Server) {
         self.sock = sock
         self.server = server
@@ -33,6 +34,7 @@ public class SingleConnection: Connection {
         
         do {
             if once {
+                // FIXME
                 // Consider timeout
                 try waitForData(nil)
                 try processInput()
@@ -113,11 +115,18 @@ public class SingleConnection: Connection {
             break
             
         default:
-            // Invalid record type
-            // Ignore it
-            // FIXME: do some log here?
+            try self.handleUnknownType(record)
             break
         }
+    }
+    
+    private func handleUnknownType(record: Record) throws {
+        let ret = Record()
+        ret.contentLength = 8
+        ret.contentData = [UInt8].init(arrayLiteral: record.type.rawValue, 0, 0, 0, 0, 0, 0, 0)
+        ret.type = RecordType.UNKNOWN_TYPE
+        ret.requestId = 0
+        try ret.writeTo(self)
     }
     
     private func handleGetValue(record: Record) throws {
@@ -141,7 +150,7 @@ public class SingleConnection: Connection {
                 break
                 
             case FCGI_MPXS_CONNS:
-                query[name] = String(0)
+                query[name] = String(isMultiplex)
                 break
                 
             default:
@@ -162,15 +171,12 @@ public class SingleConnection: Connection {
     
     private func handleParams(record: Record) throws {
         guard let req = self.curRequest else {
-            // Current request isn't valid maybe something wrong
-            // in data sent from server
             return
         }
         
         guard record.contentLength != 0 , let cntData = record.contentData else {
             // A empty params is sent
             // tick the request
-
             try self.server.handleRequest(req)
             self.curRequest = nil
             return
@@ -182,8 +188,6 @@ public class SingleConnection: Connection {
     
     private func handleStdIn(record: Record) {
         guard let req = self.curRequest else {
-            // Current request isn't valid maybe something wrong
-            // in data sent from server
             return
         }
         
