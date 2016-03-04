@@ -24,12 +24,17 @@ public class SingleConnection: Connection {
         self.server = server
     }
     
-    public func loop() throws {
-        self.inputStream = self.inputStreamType.init(sock: self.sock)
-        self.outputStream = self.outputStreamType.init(sock: self.sock)
-        while !stop {
+    public func loop(once: Bool) throws {
+        if once {
             try waitForData(nil)
             try processInput()
+        } else {
+            self.inputStream = self.inputStreamType.init(sock: self.sock)
+            self.outputStream = self.outputStreamType.init(sock: self.sock)
+            while !stop {
+                try waitForData(nil)
+                try processInput()
+            }
         }
     }
     

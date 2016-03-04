@@ -24,7 +24,7 @@ public protocol Connection{
 //       data error to server
 public protocol Connection {
     init(sock: Int32, server: Server)
-    func loop() throws
+    func loop(once: Bool) throws
     
     var sock: Int32 {get}
     var inputStreamType: InputStream.Type {get set}

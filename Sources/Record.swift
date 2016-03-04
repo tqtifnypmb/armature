@@ -48,7 +48,16 @@ public final class Record {
         return record
     }
 
-    class func skip(conn: Connection, len: UInt32) throws {
+    class func createEOFRecord(reqId: UInt16, type: RecordType) -> Record {
+        let r = Record()
+        r.type = type
+        r.requestId = reqId
+        r.contentLength = 0
+        r.contentData = nil
+        return r
+    }
+    
+    private class func skip(conn: Connection, len: UInt32) throws {
         var ignore = [UInt8].init(count: Int(len), repeatedValue: 0)
         //try Utils.readN(sock, buffer: &ignore, n: len)
         try conn.readInto(&ignore)

@@ -9,13 +9,21 @@
 import Foundation
 
 class MyApp: Application {
-    func main(env: Environment, respondHeaders: RespondHeaders) -> UInt8 {
-        let writer = respondHeaders(status: "301", headers: ["Content-Type": "text/html" , "Content-Length": "50"])
+    func main(env: Environment, respondHeaders: RespondHeaders) -> Int8 {
+        let writer = respondHeaders(status: "200", headers: ["Content-Type": "text/html" , "Content-Length": "200"])
         do {
-            //try writer(env.request.params.description, nil)
-            try writer("<html><head>from armature fastcgi</head><body>This's my job</body></html>", nil)
+            try writer("<!DOCTYPE html><html><head><meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">from armature fastcgi</head><body>This's my job", nil)
+            if env.STDIN.contentLength > 0 {
+                var buffer = [UInt8].init(count: Int(env.STDIN.contentLength), repeatedValue: 0)
+                try env.STDIN.readInto(&buffer)
+                if let str = String(bytes: buffer, encoding: NSUTF8StringEncoding) {
+                    try writer(str, nil)
+                }
+            }
+            try writer("</body></html>", nil)
         } catch {
             // FIXME
+            assert(false)
         }
         return 0
     }

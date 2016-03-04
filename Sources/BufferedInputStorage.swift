@@ -11,7 +11,7 @@ import Foundation
 class BufferedInputStorage: InputStorage {
     
     private let maxBuffer = 102400 - 8192
-    private var buffer: [UInt8] = []
+    private var data: [UInt8] = []
     private var pos = 0
     private let connection: Connection
     public var contentLength: UInt16 = 0
@@ -25,25 +25,21 @@ class BufferedInputStorage: InputStorage {
         }
         
         let maxToRead = min(Int(self.contentLength), buffer.count)
-        if self.buffer.count - pos < maxToRead {
-            var remain = maxToRead - (self.buffer.count - pos)
-            var data = [UInt8].init(count: remain, repeatedValue: 0)
-            while remain > 0 {
-                // Error !! Shouldn't read from connection. We should let connection loop againg instead
-                // Consider multiplex
-                let nread = try self.connection.readInto(&data)
-                remain -= nread
-            }
+        if self.data.count - pos < maxToRead {
+            // FIXME 
+            // What if there're more than one stdin record
+            try self.connection.loop(true)
         }
         
-        buffer[buffer.startIndex ... buffer.endIndex] = self.buffer[self.buffer.startIndex + pos ... self.buffer.endIndex]
+        buffer[buffer.startIndex ... buffer.endIndex] = self.data[self.data.startIndex + pos ... self.data.endIndex]
         self.tryToShrinkBuffer()
+        self.contentLength -= UInt16(maxToRead)
         return maxToRead
     }
     
     func addData(data: [UInt8]) {
-        self.buffer.appendContentsOf(data)
-        if self.buffer.count > self.maxBuffer {
+        self.data.appendContentsOf(data)
+        if self.data.count > self.maxBuffer {
             self.tryToShrinkBuffer()
         }
     }
@@ -52,6 +48,6 @@ class BufferedInputStorage: InputStorage {
         guard self.pos != 0 else {
             return
         }
-        self.buffer.removeFirst(self.pos)
+        self.data.removeFirst(self.pos)
     }
 }

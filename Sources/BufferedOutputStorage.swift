@@ -16,6 +16,7 @@ class BufferedOutputStorage: OutputStorage {
     private let connection: Connection
     private let isErr: Bool
     private let requestId: UInt16
+    private var needEOF = false
     required init(conn: Connection, reqId: UInt16, isErr: Bool) {
         self.connection = conn
         self.isErr = isErr
@@ -23,6 +24,7 @@ class BufferedOutputStorage: OutputStorage {
     }
     
     func write(data: [UInt8]) throws {
+        self.needEOF = true
         self.buffer.appendContentsOf(data)
         if self.buffer.count >= self.maxBuffer {
             try self.buildRecord().writeTo(self.connection)
@@ -45,9 +47,12 @@ class BufferedOutputStorage: OutputStorage {
     }
     
     func writeEOF() throws {
-        let eof = self.buildRecord()
-        eof.contentLength = 0
-        eof.contentData = nil
+        guard self.needEOF else {
+            return
+        }
+        
+        let type = self.isErr == true ? RecordType.STDERR: RecordType.STDOUT
+        let eof = Record.createEOFRecord(self.requestId, type: type)
         try eof.writeTo(self.connection)
     }
     

@@ -58,7 +58,7 @@ public class DebugServer : Server{
                 
                 let conn = try self.sock.acceptConnection()
                 let connection = self.connectionType.init(sock: conn, server: self)
-                try connection.loop()
+                try connection.loop(false)
             } catch {
                 print(error)
                 break
@@ -72,9 +72,14 @@ public class DebugServer : Server{
         }
         let env = Environment(request: request)
         var headers: [String : String]?
-        let respondWriter = { (output: String, error: String? ) throws -> Void in
+        let respondWriter = { (output: String, error: String?) throws -> Void in
             if let headers = headers {
-                try request.STDOUT.writeString(headers.description)
+                var headersStr = ""
+                for (name, value) in headers {
+                    headersStr += name + ":" + value + "\r\n"
+                }
+                headersStr += "\r\n"
+                try request.STDOUT.writeString(headersStr)
             }
             headers = nil
             

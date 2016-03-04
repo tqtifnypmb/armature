@@ -12,5 +12,5 @@ public typealias RespondWriter = (String, String?) throws -> Void
 public typealias RespondHeaders = (status: String, headers: [String : String]) -> RespondWriter
 
 public protocol Application {
-    func main(env : Environment , respondHeaders : RespondHeaders) -> UInt8
+    func main(env : Environment , respondHeaders : RespondHeaders) -> Int8
 }

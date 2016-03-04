@@ -52,16 +52,19 @@ public class Request {
         }
     }
     
-    func finishHandling(appStatus: UInt8, protoStatus: ProtocolStatus) throws {
+    func finishHandling(appStatus: Int8, protoStatus: ProtocolStatus) throws {
         try self.STDOUT.flush()
         try self.STDERR.flush()
         try self.STDOUT.writeEOF()
         try self.STDERR.writeEOF()
+        try self.STDOUT.flush()
+        try self.STDERR.flush()
+        
         let completeRecord = Record()
         completeRecord.requestId = self.requestId
         completeRecord.type = RecordType.END_REQUEST
         completeRecord.contentLength = 2
-        completeRecord.contentData = [protoStatus.rawValue, appStatus]
+        completeRecord.contentData = [UInt8(appStatus), protoStatus.rawValue]
         try completeRecord.writeTo(self.connection)
         try self.STDOUT.flush()
         try self.STDERR.flush()

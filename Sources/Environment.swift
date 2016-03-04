@@ -88,7 +88,7 @@ public class Environment {
         return self.request.params["SERVER_SOFTWARE"]
     }
     
-    var STDIN: InputStorage? {
+    var STDIN: InputStorage {
         return self.request.STDIN
     }
     /*
