@@ -45,7 +45,8 @@ public class DebugServer : Server{
             print(error)
             assert(false)
         }
-        */
+*/
+        
         
         defer {
             self.sock.closeSocket()
@@ -58,7 +59,9 @@ public class DebugServer : Server{
                 
                 let conn = try self.sock.acceptConnection()
                 let connection = self.connectionType.init(sock: conn, server: self)
-                try connection.loop(false)
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
+                    connection.loop(false)
+                }
             } catch {
                 print(error)
                 break
