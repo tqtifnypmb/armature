@@ -65,7 +65,7 @@ begin_req.contentData = bytes
 let params = Record()
 params.type = RecordType.PARAMS
 params.requestId = 1
-let p = ["username": "basdlkfasdf"]
+let p = ["username": "basdlkfasdf", "Content_Length": "20"]
 let b = Utils.encodeNameValueData(p)
 params.contentLength = UInt16(b.count)
 params.contentData = b
@@ -76,15 +76,32 @@ emptyParams.requestId = 1
 emptyParams.contentLength = 0
 emptyParams.contentData = nil
 
+let input = Record()
+input.type = RecordType.STDIN
+input.requestId = 1
+input.contentLength = 10
+input.contentData = [UInt8].init(count: 10, repeatedValue: 0)
+
+let get_value = Record()
+get_value.requestId = 0
+get_value.type = RecordType.GET_VALUE
+let query = ["FCGI_MAX_CONNS": "", "FCGI_MAX_REQS": "", "FCGI_MPXS_CONNS": ""]
+let queryBytes = Utils.encodeNameValueData(query)
+get_value.contentLength = UInt16(queryBytes.count)
+get_value.contentData = queryBytes
+
 let client = SimpleClient()
 client.connectTo("127.0.0.1", port: 9999)
-try begin_req.writeTo(client.socketFd)
-try params.writeTo(client.socketFd)
-try emptyParams.writeTo(client.socketFd)
+///try begin_req.writeTo(client.socketFd)
+//try params.writeTo(client.socketFd)
+//try emptyParams.writeTo(client.socketFd)
 
+try get_value.writeTo(client.socketFd)
 try begin_req.writeTo(client.socketFd)
 try params.writeTo(client.socketFd)
+try input.writeTo(client.socketFd)
 try emptyParams.writeTo(client.socketFd)
+try input.writeTo(client.socketFd)
 
 var buffer = [UInt8].init(count: 8, repeatedValue: 0)
 print("===+++++++++====")
