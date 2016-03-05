@@ -42,9 +42,6 @@ class MyApp: Application {
     }
 }
 
-var addr = "/Users/tqtifnypmb/lighttpd/armature"
 let server = SingleServer()
 let app = MyApp()
-server.debug = true
-server.unix_socket_path = "/Users/tqtifnypmb/lighttpd/armature"
 server.run(app)

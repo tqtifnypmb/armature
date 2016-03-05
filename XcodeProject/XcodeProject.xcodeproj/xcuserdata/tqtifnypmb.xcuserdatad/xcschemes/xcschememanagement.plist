@@ -4,10 +4,10 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>SimpleClient.xcscheme</key>
+		<key>ProtocolTests.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>3</integer>
 		</dict>
 		<key>UnitTests.xcscheme</key>
 		<dict>
@@ -22,6 +22,16 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>410378D31C8A858C0064FCD0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>410378F41C8A873A0064FCD0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>41EE364B1C87F4740091844C</key>
 		<dict>
 			<key>primary</key>
