@@ -65,6 +65,10 @@ class ProtocolTests: XCTestCase {
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        self.server.forceStop()
+        
+        // Make sure server has time to shutdown
+        sleep(1)
         super.tearDown()
     }
     
@@ -268,8 +272,45 @@ extension Record {
         return record
     }
     
+    func writeTo(sock: Int32) throws {
+        var paddingLength: UInt8 = 0
+        if self.contentLength != 0 {
+            paddingLength = UInt8(self.calPadding(self.contentLength, boundary: 8))
+        }
+        
+        var heads = [UInt8].init(count: FCGI_HEADER_LEN, repeatedValue: 0)
+        heads[0] = 1                                            // Version
+        heads[1] = self.type.rawValue                           // Type
+        heads[2] = 0                                            // Request ID
+        heads[3] = 0                                            // Request ID
+        heads[4] = UInt8(self.contentLength >> 8)               // Content Length
+        heads[5] = UInt8(self.contentLength & 0xFF)             // Content Length
+        heads[6] = paddingLength                                // Paddign Length
+        heads[7] = 0                                            // Reserve
+        
+        // FIXME  Consider byte order !!!
+        //try conn.write(&heads)
+        try Utils.writeN(sock, data: &heads, n: UInt32(FCGI_HEADER_LEN))
+        if self.contentLength != 0 {
+            //try conn.write(&self.contentData!)
+            try Utils.writeN(sock, data: &self.contentData!, n: UInt32(self.contentLength))
+        }
+        if paddingLength > 0 {
+            var padding = [UInt8].init(count: Int(paddingLength), repeatedValue: 0)
+            //try conn.write(&padding)
+            try Utils.writeN(sock, data: &padding, n: UInt32(paddingLength))
+        }
+    }
+    
     private class func skip(sock: Int32, len: UInt32) throws {
         var ignore = [UInt8].init(count: Int(len), repeatedValue: 0)
         try Utils.readN(sock, buffer: &ignore, n: UInt32(len))
+    }
+    
+    private func calPadding(n: UInt16, boundary: UInt16) -> UInt16 {
+        guard n != 0 else {
+            return boundary
+        }
+        return (~n + 1) & (boundary - 1)
     }
 }

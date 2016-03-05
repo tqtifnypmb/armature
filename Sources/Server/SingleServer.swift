@@ -66,6 +66,10 @@ public class SingleServer: Server {
         }
     }
     
+    public func forceStop() {
+        self.sock.closeSocket()
+    }
+    
     public func handleRequest(request: Request) throws {
         guard let app = self.app else {
             return
