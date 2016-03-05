@@ -39,7 +39,7 @@ public class SingleServer: Server {
                 self.sock = try Socket.createBoundUnixSocket(unix_socket_path)
             } catch {
                 print(error)
-                assert(false)
+                return
             }
         } else {
             self.sock = Socket()
