@@ -68,35 +68,6 @@ class ProtocolTests: XCTestCase {
         super.tearDown()
     }
     
-    func testGet_Value_Request() {
-        let client = SimpleClient()
-        client.connectToServer(server.unix_socket_path)
-
-        defer {
-            close(client.socketFd)
-        }
-        
-        let get_value = Record()
-        get_value.requestId = 0
-        get_value.type = RecordType.GET_VALUE
-        let query = ["FCGI_MAX_CONNS": "", "FCGI_MAX_REQS": "", "FCGI_MPXS_CONNS": ""]
-        let queryBytes = Utils.encodeNameValueData(query)
-        get_value.contentLength = UInt16(queryBytes.count)
-        get_value.contentData = queryBytes
-        
-        do {
-            try get_value.writeTo(client.socketFd)
-            let get_value_result = try Record.readFromSocket(client.socketFd)
-            let query_result = Utils.parseNameValueData(get_value_result.contentData!)
-            
-            let maxConn: UInt64 = 100
-            let correct_result = ["FCGI_MAX_CONNS": String(maxConn), "FCGI_MAX_REQS": String(maxConn), "FCGI_MPXS_CONNS": "0"]
-            XCTAssertEqual(correct_result, query_result)
-        } catch {
-            XCTAssert(false, "Network error")
-        }
-    }
-    
     var emptyParams: Record {
         let emptyParams = Record()
         emptyParams.type = RecordType.PARAMS
@@ -145,16 +116,45 @@ class ProtocolTests: XCTestCase {
         return d
     }
     
+    func testGet_Value_Request() {
+        let client = SimpleClient()
+        client.connectToServer(server.unix_socket_path)
+        
+        defer {
+            close(client.socketFd)
+        }
+        
+        let get_value = Record()
+        get_value.requestId = 0
+        get_value.type = RecordType.GET_VALUE
+        let query = ["FCGI_MAX_CONNS": "", "FCGI_MAX_REQS": "", "FCGI_MPXS_CONNS": ""]
+        let queryBytes = Utils.encodeNameValueData(query)
+        get_value.contentLength = UInt16(queryBytes.count)
+        get_value.contentData = queryBytes
+        
+        do {
+            try get_value.writeTo(client.socketFd)
+            let get_value_result = try Record.readFromSocket(client.socketFd)
+            let query_result = Utils.parseNameValueData(get_value_result.contentData!)
+            
+            let maxConn: UInt64 = 100
+            let correct_result = ["FCGI_MAX_CONNS": String(maxConn), "FCGI_MAX_REQS": String(maxConn), "FCGI_MPXS_CONNS": "0"]
+            XCTAssertEqual(correct_result, query_result)
+        } catch {
+            XCTAssert(false, "Network error")
+        }
+    }
+    
     func testRequestWithoutSTDIN() {
         self.sendRecordsAndCheckResult([self.begin_request, self.params, self.emptyParams])
     }
     
-    func testRequestWithSequentialSTDIN() {
+    func testRequestSequentialSTDIN() {
         self.STDINLen = 20
         self.sendRecordsAndCheckResult([self.begin_request, self.input, self.input, self.params, self.emptyParams])
     }
     
-    func testRequestWithRamdonSTDIN() {
+    func testRequestRamdonSTDIN() {
         self.STDINLen = 30
         self.sendRecordsAndCheckResult([self.begin_request, self.input, self.params, self.input, self.emptyParams, self.input])
     }
