@@ -34,8 +34,9 @@ public class SingleConnection: Connection {
         
         do {
             if once {
-                // FIXME
-                // Consider timeout
+                // According to [RFC 3875], there're always as many data
+                // as CONTENT_LENGTH unless web server close connection prematurely.
+                // So it's safe to block here
                 try waitForData(nil)
                 try processInput()
             } else {
@@ -201,7 +202,7 @@ public class SingleConnection: Connection {
             let req = try Request(record: record, conn: self)
             self.curRequest = req
         } catch DataError.UnknownRole {
-            // let unknown role error throws will brake down the connection
+            // let unknown role error throws will tear down the connection
             return
         }
     }
