@@ -34,7 +34,7 @@ public class SingleServer: Server {
         self.app = app
         
         if self.debug {
-            do {
+            do {    
                 unlink(unix_socket_path)
                 self.sock = try Socket.createBoundUnixSocket(unix_socket_path)
             } catch {
