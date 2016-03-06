@@ -49,7 +49,5 @@ This project is base on [flup](https://pypi.python.org/pypi/flup) and [web.py](h
 ## TODO
 
 - Support abort requests
-- Support mutiplex request
-- Support multi-connections
 - Support CGI
 - More tests
