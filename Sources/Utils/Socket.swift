@@ -50,7 +50,7 @@ internal final class Socket {
     func acceptConnection(remoteAddr: UnsafeMutablePointer<sockaddr> = nil, addrLen: UnsafeMutablePointer<socklen_t> = nil) throws -> Int32 {
         assert(self.socketFd != -1)
         let conn = accept(self.socketFd, remoteAddr, addrLen)
-        if conn == -1 {
+        guard conn != -1 else {
             throw SocketError.AcceptFailed(Socket.getErrorDescription())
         }
     

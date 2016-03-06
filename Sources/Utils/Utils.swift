@@ -85,7 +85,7 @@ internal final class Utils {
             }
             
             if let name = name {
-                params[name.uppercaseString] = value
+                params[name] = value
             }
         }
         return params

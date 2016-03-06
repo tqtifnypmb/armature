@@ -69,8 +69,8 @@ public final class Record {
         var heads = [UInt8].init(count: FCGI_HEADER_LEN, repeatedValue: 0)
         heads[0] = 1                                            // Version
         heads[1] = self.type.rawValue                           // Type
-        heads[2] = 0                                            // Request ID
-        heads[3] = 0                                            // Request ID
+        heads[2] = UInt8(self.requestId >> UInt16(8))           // Request ID
+        heads[3] = UInt8(self.requestId & 0xFF)                 // Request ID
         heads[4] = UInt8(self.contentLength >> 8)               // Content Length
         heads[5] = UInt8(self.contentLength & 0xFF)             // Content Length
         heads[6] = paddingLength                                // Paddign Length

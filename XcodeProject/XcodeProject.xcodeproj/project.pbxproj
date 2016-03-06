@@ -13,7 +13,6 @@
 		410378DF1C8A86A30064FCD0 /* ProtocolConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E21C893C190077BA96 /* ProtocolConstant.swift */; };
 		410378E01C8A86A30064FCD0 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E31C893C190077BA96 /* Record.swift */; };
 		410378E11C8A86A30064FCD0 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E41C893C190077BA96 /* Request.swift */; };
-		410378E21C8A86A60064FCD0 /* SingleServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418E0F251C89E6110007475F /* SingleServer.swift */; };
 		410378E31C8A86A60064FCD0 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E71C893C190077BA96 /* Server.swift */; };
 		410378E41C8A86A90064FCD0 /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E91C893C190077BA96 /* Socket.swift */; };
 		410378E51C8A86A90064FCD0 /* String+BytesConvert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5EA1C893C190077BA96 /* String+BytesConvert.swift */; };
@@ -29,7 +28,6 @@
 		410378EF1C8A86B70064FCD0 /* Exception.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5D31C893C190077BA96 /* Exception.swift */; };
 		410378F01C8A86B90064FCD0 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5CF1C893C190077BA96 /* Application.swift */; };
 		410378F81C8A873A0064FCD0 /* ProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410378F71C8A873A0064FCD0 /* ProtocolTests.swift */; };
-		410378FD1C8A87600064FCD0 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5CF1C893C190077BA96 /* Application.swift */; };
 		410378FE1C8A87630064FCD0 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5D11C893C190077BA96 /* Connection.swift */; };
 		410378FF1C8A87630064FCD0 /* SingleConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5D21C893C190077BA96 /* SingleConnection.swift */; };
 		410379001C8A87630064FCD0 /* Exception.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5D31C893C190077BA96 /* Exception.swift */; };
@@ -45,11 +43,15 @@
 		4103790A1C8A87710064FCD0 /* ProtocolConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E21C893C190077BA96 /* ProtocolConstant.swift */; };
 		4103790B1C8A87710064FCD0 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E31C893C190077BA96 /* Record.swift */; };
 		4103790C1C8A87710064FCD0 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E41C893C190077BA96 /* Request.swift */; };
-		4103790D1C8A87740064FCD0 /* SingleServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418E0F251C89E6110007475F /* SingleServer.swift */; };
 		4103790E1C8A87740064FCD0 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E71C893C190077BA96 /* Server.swift */; };
 		4103790F1C8A87760064FCD0 /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E91C893C190077BA96 /* Socket.swift */; };
 		410379101C8A87760064FCD0 /* String+BytesConvert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5EA1C893C190077BA96 /* String+BytesConvert.swift */; };
 		410379111C8A87760064FCD0 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5EB1C893C190077BA96 /* Utils.swift */; };
+		4129453D1C8C7042005897CA /* MultiplexConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4129453C1C8C7042005897CA /* MultiplexConnection.swift */; };
+		4129453E1C8C7D25005897CA /* MultiplexConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4129453C1C8C7042005897CA /* MultiplexConnection.swift */; };
+		412945421C8C9111005897CA /* Multi_Connections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 412945411C8C9111005897CA /* Multi_Connections.swift */; };
+		412945431C8C913F005897CA /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5CF1C893C190077BA96 /* Application.swift */; };
+		412945441C8C9144005897CA /* FCGIServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418E0F251C89E6110007475F /* FCGIServer.swift */; };
 		4189E5EC1C893C190077BA96 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5CF1C893C190077BA96 /* Application.swift */; };
 		4189E5ED1C893C190077BA96 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5CF1C893C190077BA96 /* Application.swift */; };
 		4189E5EE1C893C190077BA96 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5CF1C893C190077BA96 /* Application.swift */; };
@@ -110,7 +112,7 @@
 		4189E6281C893C190077BA96 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5EB1C893C190077BA96 /* Utils.swift */; };
 		4189E6291C893C190077BA96 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5EB1C893C190077BA96 /* Utils.swift */; };
 		4189E62A1C893C190077BA96 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5EB1C893C190077BA96 /* Utils.swift */; };
-		418E0F261C89E6110007475F /* SingleServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418E0F251C89E6110007475F /* SingleServer.swift */; };
+		418E0F261C89E6110007475F /* FCGIServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418E0F251C89E6110007475F /* FCGIServer.swift */; };
 		41EE36501C87F4740091844C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE364F1C87F4740091844C /* main.swift */; };
 		41EE36801C87F4F20091844C /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE367F1C87F4F20091844C /* UnitTests.swift */; };
 /* End PBXBuildFile section */
@@ -141,6 +143,8 @@
 		410378F51C8A873A0064FCD0 /* ProtocolTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtocolTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		410378F71C8A873A0064FCD0 /* ProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolTests.swift; sourceTree = "<group>"; };
 		410378F91C8A873A0064FCD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4129453C1C8C7042005897CA /* MultiplexConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiplexConnection.swift; sourceTree = "<group>"; };
+		412945411C8C9111005897CA /* Multi_Connections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Multi_Connections.swift; sourceTree = "<group>"; };
 		4189E5CF1C893C190077BA96 /* Application.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		4189E5D11C893C190077BA96 /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
 		4189E5D21C893C190077BA96 /* SingleConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleConnection.swift; sourceTree = "<group>"; };
@@ -161,7 +165,7 @@
 		4189E5E91C893C190077BA96 /* Socket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
 		4189E5EA1C893C190077BA96 /* String+BytesConvert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+BytesConvert.swift"; sourceTree = "<group>"; };
 		4189E5EB1C893C190077BA96 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		418E0F251C89E6110007475F /* SingleServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleServer.swift; sourceTree = "<group>"; };
+		418E0F251C89E6110007475F /* FCGIServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FCGIServer.swift; sourceTree = "<group>"; };
 		41EE364C1C87F4740091844C /* XcodeProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = XcodeProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		41EE364F1C87F4740091844C /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		41EE367D1C87F4F20091844C /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -212,6 +216,7 @@
 		410378F61C8A873A0064FCD0 /* ProtocolTests */ = {
 			isa = PBXGroup;
 			children = (
+				412945411C8C9111005897CA /* Multi_Connections.swift */,
 				410378F71C8A873A0064FCD0 /* ProtocolTests.swift */,
 				410378F91C8A873A0064FCD0 /* Info.plist */,
 			);
@@ -231,6 +236,7 @@
 			children = (
 				4189E5D11C893C190077BA96 /* Connection.swift */,
 				4189E5D21C893C190077BA96 /* SingleConnection.swift */,
+				4129453C1C8C7042005897CA /* MultiplexConnection.swift */,
 			);
 			path = Connection;
 			sourceTree = "<group>";
@@ -285,7 +291,7 @@
 		4189E5E51C893C190077BA96 /* Server */ = {
 			isa = PBXGroup;
 			children = (
-				418E0F251C89E6110007475F /* SingleServer.swift */,
+				418E0F251C89E6110007475F /* FCGIServer.swift */,
 				4189E5E71C893C190077BA96 /* Server.swift */,
 			);
 			path = Server;
@@ -541,7 +547,6 @@
 				410378ED1C8A86B70064FCD0 /* Connection.swift in Sources */,
 				410378E51C8A86A90064FCD0 /* String+BytesConvert.swift in Sources */,
 				410378DD1C8A86A00064FCD0 /* RawOutputStream.swift in Sources */,
-				410378E21C8A86A60064FCD0 /* SingleServer.swift in Sources */,
 				410378E71C8A86AB0064FCD0 /* BufferedInputStorage.swift in Sources */,
 				410378E31C8A86A60064FCD0 /* Server.swift in Sources */,
 				410378E61C8A86A90064FCD0 /* Utils.swift in Sources */,
@@ -552,9 +557,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				412945431C8C913F005897CA /* Application.swift in Sources */,
 				410379031C8A87690064FCD0 /* InputStream.swift in Sources */,
-				410378FD1C8A87600064FCD0 /* Application.swift in Sources */,
-				4103790D1C8A87740064FCD0 /* SingleServer.swift in Sources */,
 				410379001C8A87630064FCD0 /* Exception.swift in Sources */,
 				410379101C8A87760064FCD0 /* String+BytesConvert.swift in Sources */,
 				410379091C8A87710064FCD0 /* Environment.swift in Sources */,
@@ -564,6 +568,7 @@
 				4103790B1C8A87710064FCD0 /* Record.swift in Sources */,
 				4103790C1C8A87710064FCD0 /* Request.swift in Sources */,
 				4103790A1C8A87710064FCD0 /* ProtocolConstant.swift in Sources */,
+				412945441C8C9144005897CA /* FCGIServer.swift in Sources */,
 				410378FE1C8A87630064FCD0 /* Connection.swift in Sources */,
 				410379041C8A87690064FCD0 /* RawInputStream.swift in Sources */,
 				4103790F1C8A87760064FCD0 /* Socket.swift in Sources */,
@@ -573,7 +578,9 @@
 				410379081C8A876E0064FCD0 /* RawOutputStream.swift in Sources */,
 				410378FF1C8A87630064FCD0 /* SingleConnection.swift in Sources */,
 				410379071C8A876E0064FCD0 /* OutputStream.swift in Sources */,
+				4129453E1C8C7D25005897CA /* MultiplexConnection.swift in Sources */,
 				410379011C8A87650064FCD0 /* BufferedInputStorage.swift in Sources */,
+				412945421C8C9111005897CA /* Multi_Connections.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -590,7 +597,7 @@
 				4189E6281C893C190077BA96 /* Utils.swift in Sources */,
 				4189E5FB1C893C190077BA96 /* InputStorage.swift in Sources */,
 				4189E6161C893C190077BA96 /* Record.swift in Sources */,
-				418E0F261C89E6110007475F /* SingleServer.swift in Sources */,
+				418E0F261C89E6110007475F /* FCGIServer.swift in Sources */,
 				4189E6191C893C190077BA96 /* Request.swift in Sources */,
 				4189E6131C893C190077BA96 /* ProtocolConstant.swift in Sources */,
 				4189E5EF1C893C190077BA96 /* Connection.swift in Sources */,
@@ -602,6 +609,7 @@
 				4189E60D1C893C190077BA96 /* RawOutputStream.swift in Sources */,
 				4189E5F21C893C190077BA96 /* SingleConnection.swift in Sources */,
 				4189E60A1C893C190077BA96 /* OutputStream.swift in Sources */,
+				4129453D1C8C7042005897CA /* MultiplexConnection.swift in Sources */,
 				4189E5F81C893C190077BA96 /* BufferedInputStorage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -850,6 +858,7 @@
 				410378DB1C8A858C0064FCD0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		410378FA1C8A873A0064FCD0 /* Build configuration list for PBXNativeTarget "ProtocolTests" */ = {
 			isa = XCConfigurationList;
@@ -858,6 +867,7 @@
 				410378FC1C8A873A0064FCD0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		41EE36471C87F4740091844C /* Build configuration list for PBXProject "XcodeProject" */ = {
 			isa = XCConfigurationList;

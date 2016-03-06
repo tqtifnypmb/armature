@@ -42,6 +42,6 @@ class MyApp: Application {
     }
 }
 
-let server = SingleServer()
+let server = FCGIServer()
 let app = MyApp()
 server.run(app)

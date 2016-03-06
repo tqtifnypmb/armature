@@ -19,10 +19,12 @@ public class SingleConnection: Connection {
     
     private var inputStream: InputStream!
     private var outputStream: OutputStream!
-    private let isMultiplex = 0
+    
+    var isMultiplex: Int
     required public init(sock: Int32, server: Server) {
         self.sock = sock
         self.server = server
+        self.isMultiplex = 0
     }
     
     public func loop(once: Bool) {
@@ -48,6 +50,7 @@ public class SingleConnection: Connection {
                 }
             }
         } catch {
+            self.stop = true
         }
     }
     
@@ -55,7 +58,12 @@ public class SingleConnection: Connection {
         return try self.inputStream.readInto(&buffer)
     }
     
+    var f = NSLock()
     public func write(inout data: [UInt8]) throws {
+        f.lock()
+        defer {
+            f.unlock()
+        }
         try self.outputStream.write(&data)
     }
     
@@ -130,7 +138,7 @@ public class SingleConnection: Connection {
         try ret.writeTo(self)
     }
     
-    private func handleGetValue(record: Record) throws {
+    func handleGetValue(record: Record) throws {
         guard record.contentLength != 0 , let cntData = record.contentData else {
             return
         }
@@ -170,7 +178,7 @@ public class SingleConnection: Connection {
         try self.abortRequest(record.requestId)
     }
     
-    private func handleParams(record: Record) throws {
+    func handleParams(record: Record) throws {
         guard let req = self.curRequest else {
             return
         }
@@ -178,8 +186,7 @@ public class SingleConnection: Connection {
         guard record.contentLength != 0 , let cntData = record.contentData else {
             // A empty params is sent
             // tick the request
-            try self.server.handleRequest(req)
-            self.curRequest = nil
+            try self.serveRequest(req)
             return
         }
         
@@ -187,7 +194,7 @@ public class SingleConnection: Connection {
         req.setParams(params)
     }
     
-    private func handleStdIn(record: Record) {
+    func handleStdIn(record: Record) {
         guard let req = self.curRequest else {
             return
         }
@@ -197,7 +204,7 @@ public class SingleConnection: Connection {
         }
     }
     
-    private func handleBeginRequest(record: Record) throws {
+    func handleBeginRequest(record: Record) throws {
         do {
             let req = try Request(record: record, conn: self)
             self.curRequest = req
@@ -207,7 +214,7 @@ public class SingleConnection: Connection {
         }
     }
     
-    private func handleData(record: Record) {
+    func handleData(record: Record) {
         guard let req = self.curRequest else {
             return
         }
@@ -215,5 +222,10 @@ public class SingleConnection: Connection {
         if record.contentLength > 0, let cntData = record.contentData {
             req.DATA = cntData
         }
+    }
+    
+    func serveRequest(req: Request) throws {
+        try self.server.handleRequest(req)
+        self.curRequest = nil
     }
 }

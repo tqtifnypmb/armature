@@ -42,24 +42,25 @@ class MyApp: Application {
 
 class ProtocolTests: XCTestCase {
 
-    var server: SingleServer!
+    var server: FCGIServer!
     var STDINLen = 0
-    
+    let queue = NSOperationQueue()
     override func setUp() {
         super.setUp()
         
-        server = SingleServer()
+        server = FCGIServer()
         let app = MyApp()
         
         server.debug = true
         server.unix_socket_path = "/Users/tqtifnypmb/lighttpd/armature"
         server.maxConnections = 100
         server.maxRequests = 100
+        //server.connectionType = MultiplexConnection.self
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
+        queue.addOperationWithBlock() {
             self.server.run(app)
         }
-        // Make sure server's already ran
+        // Make sure server runs first
         sleep(1)
     }
     
@@ -68,7 +69,7 @@ class ProtocolTests: XCTestCase {
         self.server.forceStop()
         
         // Make sure server has time to shutdown
-        sleep(1)
+        queue.waitUntilAllOperationsAreFinished()
         super.tearDown()
     }
     
@@ -176,7 +177,24 @@ class ProtocolTests: XCTestCase {
         self.sendRecordsAndCheckResult([r], special_result: str)
     }
     
-    private func sendRecordsAndCheckResult(records: [Record], special_result: String? = nil) {
+    func testMultiplexReq() {
+        self.STDINLen = 20
+        let begin_request_2 = self.begin_request
+        begin_request_2.requestId = 2
+        
+        let input_2 = self.input
+        input_2.requestId = 2
+        
+        let params_2 = self.params
+        params_2.requestId = 2
+        
+        let empty_params_2 = self.emptyParams
+        empty_params_2.requestId = 2
+        
+        self.sendRecordsAndCheckResult([self.begin_request, self.input, begin_request_2, self.params, self.input, input_2, params_2, self.emptyParams, input_2, empty_params_2])
+    }
+    
+    func sendRecordsAndCheckResult(records: [Record], special_result: String? = nil) {
         let client = SimpleClient()
         client.connectToServer(server.unix_socket_path)
         
@@ -281,23 +299,19 @@ extension Record {
         var heads = [UInt8].init(count: FCGI_HEADER_LEN, repeatedValue: 0)
         heads[0] = 1                                            // Version
         heads[1] = self.type.rawValue                           // Type
-        heads[2] = 0                                            // Request ID
-        heads[3] = 0                                            // Request ID
+        heads[2] = UInt8(self.requestId >> UInt16(8))           // Request ID
+        heads[3] = UInt8(self.requestId & 0xFF)                 // Request ID
         heads[4] = UInt8(self.contentLength >> 8)               // Content Length
         heads[5] = UInt8(self.contentLength & 0xFF)             // Content Length
         heads[6] = paddingLength                                // Paddign Length
         heads[7] = 0                                            // Reserve
         
-        // FIXME  Consider byte order !!!
-        //try conn.write(&heads)
         try Utils.writeN(sock, data: &heads, n: UInt32(FCGI_HEADER_LEN))
         if self.contentLength != 0 {
-            //try conn.write(&self.contentData!)
             try Utils.writeN(sock, data: &self.contentData!, n: UInt32(self.contentLength))
         }
         if paddingLength > 0 {
             var padding = [UInt8].init(count: Int(paddingLength), repeatedValue: 0)
-            //try conn.write(&padding)
             try Utils.writeN(sock, data: &padding, n: UInt32(paddingLength))
         }
     }
