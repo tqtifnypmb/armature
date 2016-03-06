@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class SingleServer: Server {
+public class FCGIServer: Server {
 
     public var maxConnections: UInt64
     public var maxRequests: UInt64
@@ -16,7 +16,9 @@ public class SingleServer: Server {
     private var sock: Socket = Socket()
     private var app: Application?
     
-    init() {
+    private let isThreaded: Bool
+    private var connectionsQueue: NSOperationQueue!
+    init(threaded: Bool = false) {
         var rLimit = rlimit()
         if getrlimit(RLIMIT_NOFILE, &rLimit) != -1 {
             self.maxConnections = rLimit.rlim_cur
@@ -24,6 +26,11 @@ public class SingleServer: Server {
             self.maxConnections = 100
         }
         self.maxRequests = self.maxConnections
+        self.isThreaded = threaded
+        
+        if threaded {
+            self.connectionsQueue = NSOperationQueue()
+        }
     }
     
     // For debug only
@@ -50,13 +57,26 @@ public class SingleServer: Server {
             self.sock.closeSocket()
         }
         
+        if self.isThreaded {
+            defer {
+                self.connectionsQueue.waitUntilAllOperationsAreFinished()
+            }
+        }
+        
         while true {
             do {
                 // wait indefinitely
                 try self.sock.waitForConnection(nil)
                 let conn = try self.sock.acceptConnection()
                 let connection = self.connectionType.init(sock: conn, server: self)
-                connection.loop(false)
+                
+                if self.isThreaded {
+                    self.connectionsQueue.addOperationWithBlock() {
+                        connection.loop(false)
+                    }
+                } else {
+                    connection.loop(false)
+                }
             } catch {
                 print(error)
                 break
