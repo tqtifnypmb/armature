@@ -56,9 +56,7 @@ public class SingleServer: Server {
                 try self.sock.waitForConnection(nil)
                 let conn = try self.sock.acceptConnection()
                 let connection = self.connectionType.init(sock: conn, server: self)
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
-                    connection.loop(false)
-                }
+                connection.loop(false)
             } catch {
                 print(error)
                 break
