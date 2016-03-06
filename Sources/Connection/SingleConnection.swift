@@ -39,13 +39,13 @@ public class SingleConnection: Connection {
                 // According to [RFC 3875], there're always as many data
                 // as CONTENT_LENGTH unless web server close connection prematurely.
                 // So it's safe to block here
-                //try waitForData(nil)
+                try waitForData(nil)
                 try processInput()
             } else {
                 self.inputStream = self.inputStreamType.init(sock: self.sock)
                 self.outputStream = self.outputStreamType.init(sock: self.sock)
                 while !self.stop {
-                    //try waitForData(nil)
+                    try waitForData(nil)
                     try processInput()
                 }
             }
@@ -58,12 +58,7 @@ public class SingleConnection: Connection {
         return try self.inputStream.readInto(&buffer)
     }
     
-    var f = NSLock()
     public func write(inout data: [UInt8]) throws {
-        f.lock()
-        defer {
-            f.unlock()
-        }
         try self.outputStream.write(&data)
     }
     
@@ -76,22 +71,14 @@ public class SingleConnection: Connection {
     }
     
     private func waitForData(timeout: UnsafeMutablePointer<timeval>) throws -> Bool {
-        var read_set = fd_set()
-        read_set.fds_bits.0 = self.sock
-        
-        var nready: Int32
-        if timeout == nil {
-            var t = timeval()
-            t.tv_sec = 0
-            //FIXME
-            nready = select(self.sock + 1, &read_set, nil, nil, &t)
-        } else {
-            nready = select(self.sock + 1, &read_set, nil, nil, timeout)
-        }
-        if (nready == -1) {
+        var nfd = pollfd()
+        nfd.fd = self.sock
+        nfd.events = Int16(POLLIN)
+        let ret = poll(&nfd, 1, -1)
+        if ret == -1 {
             throw SocketError.SelectFailed(Socket.getErrorDescription())
         }
-        return nready != 0
+        return ret != 0
     }
     
     private func processInput() throws {

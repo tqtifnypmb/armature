@@ -61,13 +61,24 @@ internal final class Socket {
     // if timeout return false
     func waitForConnection(timeout: UnsafeMutablePointer<timeval>) throws -> Bool {
         assert(self.socketFd != -1)
+        
+        
+        var nfd = pollfd()
+        nfd.fd = self.socketFd
+        nfd.events = Int16(POLLIN)
+        let ret = poll(&nfd, 1, -1)
+        if ret == -1 {
+            throw SocketError.SelectFailed(Socket.getErrorDescription())
+        }
+        return ret != 0
+        
+        /*
         var read_set = fd_set()
         read_set.fds_bits.0 = self.socketFd
-        
         var nready: Int32
         if timeout == nil {
             var t = timeval()
-            t.tv_sec = 0
+            t.tv_sec = 5
             //FIXME
             // To make select block indefinitely, we have can't just pass nil to timeout
             nready = select(self.socketFd + 1, &read_set, nil, nil, &t)
@@ -79,6 +90,7 @@ internal final class Socket {
             throw SocketError.SelectFailed(Socket.getErrorDescription())
         }
         return nready != 0
+*/
     }
     
     func closeSocket() {
