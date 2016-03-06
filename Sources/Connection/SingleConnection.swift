@@ -39,13 +39,13 @@ public class SingleConnection: Connection {
                 // According to [RFC 3875], there're always as many data
                 // as CONTENT_LENGTH unless web server close connection prematurely.
                 // So it's safe to block here
-                try waitForData(nil)
+                //try waitForData(nil)
                 try processInput()
             } else {
                 self.inputStream = self.inputStreamType.init(sock: self.sock)
                 self.outputStream = self.outputStreamType.init(sock: self.sock)
                 while !self.stop {
-                    try waitForData(nil)
+                    //try waitForData(nil)
                     try processInput()
                 }
             }

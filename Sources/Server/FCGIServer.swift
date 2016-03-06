@@ -66,7 +66,6 @@ public class FCGIServer: Server {
         while true {
             do {
                 // wait indefinitely
-                try self.sock.waitForConnection(nil)
                 let conn = try self.sock.acceptConnection()
                 let connection = self.connectionType.init(sock: conn, server: self)
                 
