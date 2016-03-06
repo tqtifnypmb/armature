@@ -52,12 +52,13 @@ class Multi_Connections: XCTestCase {
         super.setUp()
         
         server = FCGIServer(threaded: true)
-        let app = MyApp()
+        let app = MyApp2()
         
         server.debug = true
         server.unix_socket_path = "/Users/tqtifnypmb/lighttpd/armature"
         server.maxConnections = 100
         server.maxRequests = 100
+        server.connectionType = MultiplexConnection.self
         
         queue.addOperationWithBlock() {
             self.server.run(app)
@@ -80,12 +81,31 @@ class Multi_Connections: XCTestCase {
         queue.addOperationWithBlock() {
             self.sendRecordsAndCheckResult([self.begin_request, self.params, self.emptyParams], special_result: results[1])
         }
-        
+
+        sleep(1)
         queue.addOperationWithBlock() {
             self.STDINLen = 20
             self.id = 2
             self.sendRecordsAndCheckResult([self.begin_request, self.input, self.input, self.params, self.emptyParams], special_result: results[2])
         }
+        
+        sleep(2)
+        print(results[1]! + "\n\n" + results[2]! )
+        self.server.forceStop()
+        queue.waitUntilAllOperationsAreFinished()
+    }
+    
+    func testMultiplexReq() {
+        self.STDINLen = 20
+        self.id = 2
+        let begin_request_2 = self.begin_request
+        let input_2 = self.input
+        let params_2 = self.params
+        let empty_params_2 = self.emptyParams
+        
+        self.id = 1
+        self.STDINLen = 30
+        self.sendRecordsAndCheckResult([self.begin_request, self.input, begin_request_2, self.params, self.input, input_2, params_2, self.emptyParams, self.input, input_2, empty_params_2])
     }
     
     var emptyParams: Record {
@@ -120,7 +140,7 @@ class Multi_Connections: XCTestCase {
         let params = Record()
         params.type = RecordType.PARAMS
         params.requestId = self.id
-        let p = ["username": "basdlkfasdf", "Content_Length": String(self.STDINLen)]
+        let p = ["requestId": String(self.id), "Content_Length": String(self.STDINLen)]
         let b = Utils.encodeNameValueData(p)
         params.contentLength = UInt16(b.count)
         params.contentData = b
@@ -160,7 +180,7 @@ class Multi_Connections: XCTestCase {
                 XCTAssertEqual(result, sr)
             } else {
                 XCTAssertEqual(ret.type, RecordType.STDOUT)
-                XCTAssertEqual(result, expect_result)
+                XCTAssertEqual(result, results[1]! + results[2]!)
             }
             
         } catch {

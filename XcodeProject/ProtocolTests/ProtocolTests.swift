@@ -48,14 +48,14 @@ class ProtocolTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        server = FCGIServer()
+        server = FCGIServer(threaded: true)
         let app = MyApp()
         
         server.debug = true
         server.unix_socket_path = "/Users/tqtifnypmb/lighttpd/armature"
         server.maxConnections = 100
         server.maxRequests = 100
-        //server.connectionType = MultiplexConnection.self
+        server.connectionType = MultiplexConnection.self
         
         queue.addOperationWithBlock() {
             self.server.run(app)
@@ -143,7 +143,7 @@ class ProtocolTests: XCTestCase {
             let query_result = Utils.parseNameValueData(get_value_result.contentData!)
             
             let maxConn: UInt64 = 100
-            let correct_result = ["FCGI_MAX_CONNS": String(maxConn), "FCGI_MAX_REQS": String(maxConn), "FCGI_MPXS_CONNS": "0"]
+            let correct_result = ["FCGI_MAX_CONNS": String(maxConn), "FCGI_MAX_REQS": String(maxConn), "FCGI_MPXS_CONNS": "1"]
             XCTAssertEqual(correct_result, query_result)
         } catch {
             XCTAssert(false, "Network error")
@@ -175,23 +175,6 @@ class ProtocolTests: XCTestCase {
         let result = [UInt8].init(arrayLiteral: r.type.rawValue, 0, 0, 0, 0, 0, 0, 0)
         let str = String(bytes: result, encoding: NSUTF8StringEncoding)
         self.sendRecordsAndCheckResult([r], special_result: str)
-    }
-    
-    func testMultiplexReq() {
-        self.STDINLen = 20
-        let begin_request_2 = self.begin_request
-        begin_request_2.requestId = 2
-        
-        let input_2 = self.input
-        input_2.requestId = 2
-        
-        let params_2 = self.params
-        params_2.requestId = 2
-        
-        let empty_params_2 = self.emptyParams
-        empty_params_2.requestId = 2
-        
-        self.sendRecordsAndCheckResult([self.begin_request, self.input, begin_request_2, self.params, self.input, input_2, params_2, self.emptyParams, input_2, empty_params_2])
     }
     
     func sendRecordsAndCheckResult(records: [Record], special_result: String? = nil) {

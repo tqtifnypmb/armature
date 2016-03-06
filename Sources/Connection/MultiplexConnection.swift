@@ -12,6 +12,7 @@ public class MultiplexConnection: SingleConnection {
     var requests: [UInt16 : Request] = [:]
     var reqLock = NSLock()
     var streamLock = NSLock()
+    let connectionQueue = NSOperationQueue()
 
     required public init(sock: Int32, server: Server) {
         super.init(sock: sock, server: server)
@@ -27,10 +28,10 @@ public class MultiplexConnection: SingleConnection {
     }
     
     override public func write(inout data: [UInt8]) throws {
-        ///self.streamLock.lock()
-        ///defer {
-         //   self.streamLock.unlock()
-        //}
+        self.streamLock.lock()
+        defer {
+            self.streamLock.unlock()
+        }
         try super.write(&data)
     }
     
@@ -88,7 +89,7 @@ public class MultiplexConnection: SingleConnection {
     }
     
     override func serveRequest(req: Request) throws {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
+        self.connectionQueue.addOperationWithBlock() {
             do {
                 try self.server.handleRequest(req)
             } catch {
