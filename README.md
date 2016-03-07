@@ -60,7 +60,7 @@ How to create a application
 
     server.run(app)
 ```
-
+    NOTE also that if set your server support multiplex requests, you have make sure that your application is ok with multithread
 ## Example
 ```
 class MyApp : Application {
