@@ -21,8 +21,7 @@ internal final class Utils {
         }
     }
     
-    // FIXME
-    // interface should be better
+    // FIXME: interface should be better
     static func writeN(sock: Int32, data: UnsafeMutablePointer<Void>, n: UInt32) throws {
         var remain = n
         while remain > 0 {
@@ -85,7 +84,7 @@ internal final class Utils {
             }
             
             if let name = name {
-                params[name] = value
+                params[name.uppercaseString] = value
             }
         }
         return params
@@ -136,5 +135,45 @@ internal final class Utils {
     
     static func encodeAppStatus(status: Int32) -> [UInt8] {
         return [UInt8(UInt32(status) & 0xFF000000), UInt8(UInt32(status) & 0x00FF0000), UInt8(UInt32(status) & 0x0000FF00), UInt8(UInt32(status) & 0x000000FF)]
+    }
+    
+    static func isValidRemoteAddr(valid_addr_list:[String]?, inout to_check: sockaddr) -> Bool {
+        guard let valid_addrs = valid_addr_list else {
+            return true
+        }
+    
+        switch to_check.sa_family {
+        case sa_family_t(AF_INET):
+            let addr_in_p: UnsafePointer<sockaddr_in> =  Utils.socketaddr_cast(&to_check)
+            var buffer = [Int8].init(count: sizeof(sockaddr_in), repeatedValue: 0)
+            let ipBytes = inet_ntop(AF_INET, addr_in_p, &buffer, socklen_t(sizeof(sockaddr_in)))
+            guard let ip = String.fromCString(UnsafePointer<CChar>(ipBytes)) else {
+                return false
+            }
+            
+            return valid_addrs.contains(ip)
+
+        case sa_family_t(AF_UNIX):
+            // FIXME: Should this just return true ??
+            let addr_un_p: UnsafePointer<sockaddr_un> = Utils.socketaddr_cast(&to_check)
+            var addr = addr_un_p.memory
+            var path: String?
+            
+            withUnsafePointer(&addr.sun_path.0) { p in
+                path = String.fromCString(UnsafePointer<CChar>(p))
+            }
+            
+            guard let validPath = path else {
+                return false
+            }
+            return valid_addrs.contains(validPath)
+            
+        default:
+            return false
+        }
+    }
+    
+    private class func socketaddr_cast<type>(p: UnsafePointer<Void>) -> UnsafePointer<type> {
+        return UnsafePointer<type>(p)
     }
 }

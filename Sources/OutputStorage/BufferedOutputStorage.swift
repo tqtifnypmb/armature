@@ -13,14 +13,21 @@ class BufferedOutputStorage: OutputStorage {
     // This is number is from flup
     private let maxBuffer = 8192
     private var buffer: [UInt8] = []
-    private let connection: Connection
     private let isErr: Bool
+    private var connection: Connection!
     private let requestId: UInt16
     private var needEOF = false
+    
     required init(conn: Connection, reqId: UInt16, isErr: Bool) {
         self.connection = conn
         self.isErr = isErr
         self.requestId = reqId
+    }
+    
+    required init(sock: Int32, isErr: Bool) {
+        self.connection = RawConnection(sock: sock)
+        self.isErr = isErr
+        self.requestId = 0
     }
     
     func write(data: [UInt8]) throws {

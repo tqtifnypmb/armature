@@ -17,8 +17,7 @@ import Foundation
 public protocol Server {
     func run(app: Application)
     
-    // This funciton should be hidden from user
-    // FIXME
+    // FIXME: This funciton should be hidden from user
     func handleRequest(request: Request) throws
     var maxConnections: UInt64 {get set}
     var maxRequests: UInt64 {get set}

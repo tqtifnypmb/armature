@@ -15,8 +15,13 @@ class BufferedInputStorage: InputStorage {
     private var data: [UInt8] = []
     private let connection: Connection
     internal var contentLength: UInt16 = 0
+    
     required init(conn: Connection) {
         self.connection = conn
+    }
+    
+    required init(sock: Int32) {
+        self.connection = RawConnection(sock: sock)
     }
     
     func readInto(inout buffer: [UInt8]) throws -> Int {

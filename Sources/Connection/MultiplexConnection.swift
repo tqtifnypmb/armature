@@ -9,7 +9,7 @@
 import Foundation
 
 public class MultiplexConnection: SingleConnection {
-    var requests: [UInt16 : Request] = [:]
+    var requests: [UInt16 : FCGIRequest] = [:]
     var reqLock = NSLock()
     var streamLock = NSLock()
     let connectionQueue = NSOperationQueue()
@@ -63,7 +63,7 @@ public class MultiplexConnection: SingleConnection {
     
     override func handleBeginRequest(record: Record) throws {
         do {
-            let req = try Request(record: record, conn: self)
+            let req = try FCGIRequest(record: record, conn: self)
             self.reqLock.lock()
             defer {
                 self.reqLock.unlock()
@@ -88,13 +88,14 @@ public class MultiplexConnection: SingleConnection {
         super.handleData(record)
     }
     
-    override func serveRequest(req: Request) throws {
+    override func serveRequest(req: FCGIRequest) throws {
         self.connectionQueue.addOperationWithBlock() {
             do {
                 try self.server.handleRequest(req)
             } catch {
                 // One request failed , broke down the whole connection
-                self.stop = true
+                self.halt()
+                return
             }
             self.reqLock.lock()
             self.requests.removeValueForKey(req.requestId)

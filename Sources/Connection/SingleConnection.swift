@@ -9,22 +9,23 @@
 import Foundation
 
 public class SingleConnection: Connection {
-    public let sock: Int32
-    var stop = false
-    var curRequest: Request?
-    
-    public var inputStreamType: InputStream.Type = RawInputStream.self
-    public var outputStreamType: OutputStream.Type = RawOutputStream.self
+    var curRequest: FCGIRequest?
+    var isMultiplex: Int
     public var server: Server
     
-    private var inputStream: InputStream!
-    private var outputStream: OutputStream!
+    private let sock: Int32
+    private var stop = false
     
-    var isMultiplex: Int
+    private let inputStream: InputStream
+    private let outputStream: OutputStream
+
     required public init(sock: Int32, server: Server) {
         self.sock = sock
         self.server = server
         self.isMultiplex = 0
+        
+        self.inputStream = RawInputStream(sock: self.sock)
+        self.outputStream = RawOutputStream(sock: self.sock)
     }
     
     public func loop(once: Bool) {
@@ -35,18 +36,12 @@ public class SingleConnection: Connection {
         }
         
         do {
-            if once {
-                // According to [RFC 3875], there're always as many data
-                // as CONTENT_LENGTH unless web server close connection prematurely.
-                // So it's safe to block here
+            while !self.stop {
                 try waitForData(nil)
                 try processInput()
-            } else {
-                self.inputStream = self.inputStreamType.init(sock: self.sock)
-                self.outputStream = self.outputStreamType.init(sock: self.sock)
-                while !self.stop {
-                    try waitForData(nil)
-                    try processInput()
+                
+                if once {
+                    break
                 }
             }
         } catch {
@@ -162,7 +157,7 @@ public class SingleConnection: Connection {
     
     private func handleAbortRequest(record: Record) throws {
         //Just close the connection
-        try self.abortRequest(record.requestId)
+        self.halt()
     }
     
     func handleParams(record: Record) throws {
@@ -193,7 +188,7 @@ public class SingleConnection: Connection {
     
     func handleBeginRequest(record: Record) throws {
         do {
-            let req = try Request(record: record, conn: self)
+            let req = try FCGIRequest(record: record, conn: self)
             self.curRequest = req
         } catch DataError.UnknownRole {
             // let unknown role error throws will tear down the connection
@@ -211,7 +206,7 @@ public class SingleConnection: Connection {
         }
     }
     
-    func serveRequest(req: Request) throws {
+    func serveRequest(req: FCGIRequest) throws {
         try self.server.handleRequest(req)
         self.curRequest = nil
     }

@@ -28,7 +28,7 @@ public final class Record {
             record.type = type
         } else {
             // Ignore unsupport request type
-            // FIXME log may be necessary
+            // FIXME: log may be necessary
             try skip(conn, len: UInt32(record.contentLength) + paddingLength)
             return nil
         }
@@ -69,14 +69,14 @@ public final class Record {
         var heads = [UInt8].init(count: FCGI_HEADER_LEN, repeatedValue: 0)
         heads[0] = 1                                            // Version
         heads[1] = self.type.rawValue                           // Type
-        heads[2] = UInt8(self.requestId >> UInt16(8))           // Request ID
+        heads[2] = UInt8(self.requestId >> 8)                   // Request ID
         heads[3] = UInt8(self.requestId & 0xFF)                 // Request ID
         heads[4] = UInt8(self.contentLength >> 8)               // Content Length
         heads[5] = UInt8(self.contentLength & 0xFF)             // Content Length
         heads[6] = paddingLength                                // Paddign Length
         heads[7] = 0                                            // Reserve
         
-        // FIXME  Is byte order important??
+        // FIXME:  Is byte order important??
         try conn.write(&heads)
         if self.contentLength != 0 {
             try conn.write(&self.contentData!)

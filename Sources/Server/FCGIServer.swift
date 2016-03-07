@@ -18,6 +18,8 @@ public class FCGIServer: Server {
     
     private let isThreaded: Bool
     private var connectionsQueue: NSOperationQueue!
+    private var valid_server_addrs: [String]?
+    
     init(threaded: Bool = false) {
         var rLimit = rlimit()
         if getrlimit(RLIMIT_NOFILE, &rLimit) != -1 {
@@ -39,6 +41,10 @@ public class FCGIServer: Server {
     
     public func run(app: Application) {
         self.app = app
+        
+        if let web_server_addrs = NSProcessInfo().environment["FCGI_WEB_SERVER_ADDRS"] {
+            self.valid_server_addrs = web_server_addrs.componentsSeparatedByString(",")
+        }
         
         if self.debug {
             do {    
@@ -66,7 +72,16 @@ public class FCGIServer: Server {
         while true {
             do {
                 // wait indefinitely
-                let conn = try self.sock.acceptConnection()
+                var remote_addr = sockaddr()
+                var addr_len: socklen_t = 0
+                let conn = try self.sock.acceptConnection(&remote_addr, addrLen: &addr_len)
+                
+                if !self.debug {
+                    guard Utils.isValidRemoteAddr(self.valid_server_addrs, to_check: &remote_addr) else {
+                        continue
+                    }
+                }
+                
                 let connection = self.connectionType.init(sock: conn, server: self)
                 
                 if self.isThreaded {
@@ -87,7 +102,9 @@ public class FCGIServer: Server {
         self.sock.closeSocket()
     }
     
-    public func handleRequest(request: Request) throws {
+    public func handleRequest(req: Request) throws {
+        let request = req as! FCGIRequest
+        
         guard let app = self.app else {
             return
         }
@@ -113,6 +130,7 @@ public class FCGIServer: Server {
         let responder = { (status: String, respHeaders: [String : String]) -> RespondWriter in
             headers = respHeaders
             headers!["Status"] = status
+            
             return respondWriter
         }
         

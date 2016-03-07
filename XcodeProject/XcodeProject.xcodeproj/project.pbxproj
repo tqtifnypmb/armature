@@ -115,6 +115,11 @@
 		418E0F261C89E6110007475F /* FCGIServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418E0F251C89E6110007475F /* FCGIServer.swift */; };
 		41EE36501C87F4740091844C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE364F1C87F4740091844C /* main.swift */; };
 		41EE36801C87F4F20091844C /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE367F1C87F4F20091844C /* UnitTests.swift */; };
+		41F5AF551C8D1B180071C8AE /* CGIServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F5AF541C8D1B180071C8AE /* CGIServer.swift */; };
+		41F5AF571C8D3A260071C8AE /* FCGIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F5AF561C8D3A260071C8AE /* FCGIRequest.swift */; };
+		41F5AF591C8D3B780071C8AE /* CGIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F5AF581C8D3B780071C8AE /* CGIRequest.swift */; };
+		41F5AF611C8D4F8D0071C8AE /* RawConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F5AF601C8D4F8D0071C8AE /* RawConnection.swift */; };
+		41F5AF631C8D51AA0071C8AE /* CGITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F5AF621C8D51AA0071C8AE /* CGITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -172,6 +177,11 @@
 		41EE367F1C87F4F20091844C /* UnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
 		41EE36811C87F4F20091844C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		41EE369D1C8817110091844C /* SimpleClient */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SimpleClient; sourceTree = BUILT_PRODUCTS_DIR; };
+		41F5AF541C8D1B180071C8AE /* CGIServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGIServer.swift; sourceTree = "<group>"; };
+		41F5AF561C8D3A260071C8AE /* FCGIRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FCGIRequest.swift; sourceTree = "<group>"; };
+		41F5AF581C8D3B780071C8AE /* CGIRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGIRequest.swift; sourceTree = "<group>"; };
+		41F5AF601C8D4F8D0071C8AE /* RawConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RawConnection.swift; sourceTree = "<group>"; };
+		41F5AF621C8D51AA0071C8AE /* CGITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +226,7 @@
 		410378F61C8A873A0064FCD0 /* ProtocolTests */ = {
 			isa = PBXGroup;
 			children = (
+				41F5AF621C8D51AA0071C8AE /* CGITests.swift */,
 				412945411C8C9111005897CA /* Multi_Connections.swift */,
 				410378F71C8A873A0064FCD0 /* ProtocolTests.swift */,
 				410378F91C8A873A0064FCD0 /* Info.plist */,
@@ -237,6 +248,7 @@
 				4189E5D11C893C190077BA96 /* Connection.swift */,
 				4189E5D21C893C190077BA96 /* SingleConnection.swift */,
 				4129453C1C8C7042005897CA /* MultiplexConnection.swift */,
+				41F5AF601C8D4F8D0071C8AE /* RawConnection.swift */,
 			);
 			path = Connection;
 			sourceTree = "<group>";
@@ -284,6 +296,8 @@
 				4189E5E21C893C190077BA96 /* ProtocolConstant.swift */,
 				4189E5E31C893C190077BA96 /* Record.swift */,
 				4189E5E41C893C190077BA96 /* Request.swift */,
+				41F5AF561C8D3A260071C8AE /* FCGIRequest.swift */,
+				41F5AF581C8D3B780071C8AE /* CGIRequest.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -292,6 +306,7 @@
 			isa = PBXGroup;
 			children = (
 				418E0F251C89E6110007475F /* FCGIServer.swift */,
+				41F5AF541C8D1B180071C8AE /* CGIServer.swift */,
 				4189E5E71C893C190077BA96 /* Server.swift */,
 			);
 			path = Server;
@@ -569,6 +584,7 @@
 				4103790C1C8A87710064FCD0 /* Request.swift in Sources */,
 				4103790A1C8A87710064FCD0 /* ProtocolConstant.swift in Sources */,
 				412945441C8C9144005897CA /* FCGIServer.swift in Sources */,
+				41F5AF631C8D51AA0071C8AE /* CGITests.swift in Sources */,
 				410378FE1C8A87630064FCD0 /* Connection.swift in Sources */,
 				410379041C8A87690064FCD0 /* RawInputStream.swift in Sources */,
 				4103790F1C8A87760064FCD0 /* Socket.swift in Sources */,
@@ -588,10 +604,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41F5AF611C8D4F8D0071C8AE /* RawConnection.swift in Sources */,
 				4189E5FE1C893C190077BA96 /* InputStream.swift in Sources */,
 				4189E5EC1C893C190077BA96 /* Application.swift in Sources */,
 				4189E5F51C893C190077BA96 /* Exception.swift in Sources */,
+				41F5AF571C8D3A260071C8AE /* FCGIRequest.swift in Sources */,
 				4189E6251C893C190077BA96 /* String+BytesConvert.swift in Sources */,
+				41F5AF551C8D1B180071C8AE /* CGIServer.swift in Sources */,
 				4189E6101C893C190077BA96 /* Environment.swift in Sources */,
 				4189E6071C893C190077BA96 /* OutputStorage.swift in Sources */,
 				4189E6281C893C190077BA96 /* Utils.swift in Sources */,
@@ -601,6 +620,7 @@
 				4189E6191C893C190077BA96 /* Request.swift in Sources */,
 				4189E6131C893C190077BA96 /* ProtocolConstant.swift in Sources */,
 				4189E5EF1C893C190077BA96 /* Connection.swift in Sources */,
+				41F5AF591C8D3B780071C8AE /* CGIRequest.swift in Sources */,
 				4189E6011C893C190077BA96 /* RawInputStream.swift in Sources */,
 				4189E6221C893C190077BA96 /* Socket.swift in Sources */,
 				4189E61F1C893C190077BA96 /* Server.swift in Sources */,

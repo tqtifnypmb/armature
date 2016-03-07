@@ -10,8 +10,8 @@ import Foundation
 
 public protocol InputStorage {
     init(conn: Connection)
+    init(sock: Int32)
     func readInto(inout buffer: [UInt8]) throws -> Int
     func addData(data: [UInt8])
-    
     var contentLength: UInt16 {get set}
 }

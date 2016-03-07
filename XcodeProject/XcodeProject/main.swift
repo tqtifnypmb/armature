@@ -12,14 +12,14 @@ class MyApp: Application {
     func main(env: Environment, responder: Responder) -> Int32 {
         let writer = responder(status: "200", headers: ["Content-Type": "text/html", "My": "haha"])
         do {
-            let form = "<form action=\"/armature/fdsdfdf\" method=\"POST\">" +
+            let form = "<form action=\"/cgi-bin/XcodeProject.swift\" method=\"POST\">" +
             "<input name=\"MAX_FILE_SIZE\" value=\"100000\" />" +
             "Choose a file to upload: <input name=\"uploadedfile\" type=\"file\" /><br/>" +
             "<input type=\"submit\" value=\"Upload File\" />" +
             "</form>"
             try writer("<!DOCTYPE html><html><head><meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">from armature fastcgi</head><body>", nil)
             try writer(env.request.params.description, nil)
-            try writer(form , nil)
+            try writer(form , "fsdfdsf")
             
             
             if env.CONTENT_LENGTH > 0 {
@@ -35,13 +35,14 @@ class MyApp: Application {
             try writer("</body></html>", nil)
             
         } catch {
-            // FIXME
+            // FIXME:
             assert(false)
         }
         return 0
     }
 }
 
-let server = FCGIServer()
+//let server = FCGIServer()
+let server = CGIServer()
 let app = MyApp()
 server.run(app)
