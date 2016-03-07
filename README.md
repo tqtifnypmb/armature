@@ -13,25 +13,86 @@ All kind of Pull requests are welcome.
 ## Badges
 [![PRs Welcome](https://img.shields.io/badge/prs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-## Examples
+## Tutorial
 
-Create a application
+How to create a application
+
+# First of all, you create a application by:
 ```
-class MyApp : Application {
+    class MyApp: Application
+```
+
+# Second of all, you implement the main function of you application.
+```
     func main(env: Environment, responder: Responder) -> Int32 {
-        let respWriter = responder(status:"200", headers:["Content-Type": "text/html"])
-        do {
-            try writer("<!DOCTYPE html><html><head><meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\"></head><body>Hello world</body></html>" , nil)
-        } catch {
-        }
-        return 0
+        // You do something here
+
+        // Finally, you return the status of you application to the server
     }
-}
 ```
+
+# Third of all
+
+You create a CGIServer
+```
+    let server = CGIServer()
+```
+
+Or, you create a FCGIServer
+```
+    let server = FCGIServer()
+    
+    //or, if you want to support multi-connections handling
+
+    let server = FCGIServer(threaded: true)
+```
+*NOTE that* if set your server threaded, you have make sure that your application is ok with multithread
+
+# Finally
 
 Run it
 ```
-server.run(myApp)
+    let app = MyApp()
+
+    // You can change server's connection type, before you run it
+    // If you want to support request multipex you can
+    server.connectionType = MultiplexConnection.self
+
+    server.run(app)
+```
+
+## Example
+```
+class MyApp : Application {
+    func main(env: Environment, responder: Responder) -> Int32 {
+        let writer = responder(status: "200", headers: ["Content-Type": "text/html"])
+            do {
+                    try writer(output: "<!DOCTYPE html><html><head><meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">from armature fastcgi</head><body>", error: nil)
+                    try writer(output: env.request.params.description, error: nil)
+                    try writer(output: form , error: nil)
+
+
+                    if env.CONTENT_LENGTH > 0 {
+                        try writer(output: "===>" + String(env.CONTENT_LENGTH), error: nil)
+
+                            var input = [UInt8].init(count: Int(env.CONTENT_LENGTH), repeatedValue: 0)
+                            try env.STDIN.readInto(&input)
+                            if let cnt = String(bytes: input, encoding: NSUTF8StringEncoding) {
+                                try writer(output: cnt, error: nil)
+                            }
+                    }
+
+                try writer(output: "</error: body></html>", error: nil)
+
+            } catch {
+                assert(false)
+            }
+        return 0
+}
+
+let app = MyApp()
+let server = FCGIServer()
+server.run(app)
 ```
 
 ## Assumpsions
