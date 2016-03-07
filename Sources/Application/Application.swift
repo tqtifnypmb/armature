@@ -8,7 +8,7 @@
 import Foundation
 
 public typealias Status = String
-public typealias RespondWriter = (output: String, err_output: String?) throws -> Void
+public typealias RespondWriter = (output: String, error: String?) throws -> Void
 public typealias Responder = (status: Status, headers: [String : String]) -> RespondWriter
 
 public protocol Application {
