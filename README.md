@@ -33,12 +33,12 @@ How to create a application
 
 - Third of all
 
-You create a CGIServer
+    You create a CGIServer
 ```
     let server = CGIServer()
 ```
 
-Or, you create a FCGIServer
+    Or, you create a FCGIServer
 ```
     let server = FCGIServer()
     
@@ -46,7 +46,7 @@ Or, you create a FCGIServer
 
     let server = FCGIServer(threaded: true)
 ```
-*NOTE that* if set your server threaded, you have make sure that your application is ok with multithread
+    *NOTE that* if set your server threaded, you have make sure that your application is ok with multithread
 
 - Finally
 
