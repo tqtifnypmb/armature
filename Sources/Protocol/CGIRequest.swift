@@ -9,6 +9,7 @@
 import Foundation
 
 public class CGIRequest: Request {
+    public var requestId: UInt16 = 0
     public var STDIN: InputStorage
     public var STDOUT: OutputStorage
     public var STDERR: OutputStorage

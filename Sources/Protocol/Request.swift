@@ -14,4 +14,5 @@ public protocol Request {
     var STDERR: OutputStorage       {get set}
     var DATA: [UInt8]?              {get set}
     var params: [String : String]   {get set}
+    var requestId: UInt16           {get set}
 }

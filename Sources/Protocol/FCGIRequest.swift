@@ -9,7 +9,7 @@
 import Foundation
 
 public class FCGIRequest: Request {
-    var requestId: UInt16 = 0
+    public var requestId: UInt16 = 0
     var role: Role = .RESPONDER
     var flags: UInt8 = 0
     
