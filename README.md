@@ -17,12 +17,12 @@ All kind of Pull requests are welcome.
 
 How to create a application
 
-### First of all, you create a application by:
+#### First of all, you create a application by:
 ```
     class MyApp: Application
 ```
 
-### Second of all, you implement the main function of you application.
+#### Second of all, you implement the main function of you application.
 ```
     func main(env: Environment, responder: Responder) -> Int32 {
         // You do something here
@@ -31,7 +31,7 @@ How to create a application
     }
 ```
 
-### Third of all
+#### Third of all
 
 You create a CGIServer
 ```
@@ -48,7 +48,7 @@ Or, you create a FCGIServer
 ```
 *NOTE that* if set your server threaded, you have make sure that your application is ok with multithread
 
-### Finally
+#### Finally
 
 Run it
 ```
