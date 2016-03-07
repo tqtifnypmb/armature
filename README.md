@@ -46,7 +46,7 @@ How to create a application
 
     let server = FCGIServer(threaded: true)
 ```
-    **NOTE that if set your server threaded, you have make sure that your application is ok with multithread**
+    NOTE that if set your server threaded, you have make sure that your application is ok with multithread
 
 - Finally
 
