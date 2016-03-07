@@ -17,22 +17,22 @@ class MyApp: Application {
             "Choose a file to upload: <input name=\"uploadedfile\" type=\"file\" /><br/>" +
             "<input type=\"submit\" value=\"Upload File\" />" +
             "</form>"
-            try writer("<!DOCTYPE html><html><head><meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">from armature fastcgi</head><body>", nil)
-            try writer(env.request.params.description, nil)
-            try writer(form , "fsdfdsf")
+            try writer(output: "<!DOCTYPE html><html><head><meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">from armature fastcgi</head><body>", error: nil)
+            try writer(output: env.request.params.description, error: nil)
+            try writer(output: form , error: nil)
             
             
             if env.CONTENT_LENGTH > 0 {
-                try writer("===>" + String(env.CONTENT_LENGTH), nil)
+                try writer(output: "===>" + String(env.CONTENT_LENGTH), error: nil)
                 
                 var input = [UInt8].init(count: Int(env.CONTENT_LENGTH), repeatedValue: 0)
                 try env.STDIN.readInto(&input)
                 if let cnt = String(bytes: input, encoding: NSUTF8StringEncoding) {
-                    try writer(cnt, nil)
+                    try writer(output: cnt, error: nil)
                 }
             }
-
-            try writer("</body></html>", nil)
+            
+            try writer(output: "</error: body></html>", error: nil)
             
         } catch {
             // FIXME:
@@ -42,7 +42,8 @@ class MyApp: Application {
     }
 }
 
-//let server = FCGIServer()
-let server = CGIServer()
+let server = FCGIServer()
+//let server = CGIServer()
 let app = MyApp()
 server.run(app)
+assert(false)

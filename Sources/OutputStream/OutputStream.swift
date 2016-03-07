@@ -8,6 +8,10 @@
 
 import Foundation
 
+// OutputStream represent underlying network output, it should
+// know nothing about protocol logic.
+// OutputStream exposes a python-file-object-like interface
+// to users
 public protocol OutputStream {
     init(sock: Int32)
     func write(inout data: [UInt8]) throws

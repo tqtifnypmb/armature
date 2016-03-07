@@ -14,7 +14,7 @@ class MyApp: Application {
         let writer = responder(status: "200", headers: ["Content-Type": "text/html"])
         do {
             expect_result = "Status:200\r\nContent-Type:text/html\r\n\r\n" + env.request.params.description
-            try writer(env.request.params.description, nil)
+            try writer(output: env.request.params.description, error: nil)
             
             // Read stdin
             if env.CONTENT_LENGTH > 0 {
@@ -22,14 +22,14 @@ class MyApp: Application {
                 try env.STDIN.readInto(&inputData)
                 let inputStr = String(bytes: inputData, encoding: NSUTF8StringEncoding)!
                 expect_result += inputStr
-                try writer(inputStr, nil)
+                try writer(output: inputStr, error: nil)
             }
             
             // Read Data
             if let data = env.DATA {
                 let dataStr = String(bytes: data, encoding: NSUTF8StringEncoding)!
                 expect_result += dataStr
-                try writer(dataStr, nil)
+                try writer(output: dataStr, error: nil)
             }
             
         } catch {

@@ -8,7 +8,9 @@
 
 import Foundation
 
-// InputStream gives a python-file-object-like interface
+// InputStream represent underlying network input, it should
+// know nothing about protocol logic.
+// InputStream exposes a python-file-object-like interface
 // to users
 public protocol InputStream {
     init(sock: Int32)

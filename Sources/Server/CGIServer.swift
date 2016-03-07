@@ -61,8 +61,7 @@ public class CGIServer: Server {
             return respondWriter
         }
         
-        let appStatus = app.main(env, responder: responder)
-        //FIXME: What about appStatus??
+        app.main(env, responder: responder)
         try request.finishHandling()
     }
 }

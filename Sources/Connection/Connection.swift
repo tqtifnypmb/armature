@@ -8,13 +8,10 @@
 
 import Foundation
 
-// Connection responsible to :
-//     - Input/Output
-//     - Construct request
-//     - Deliver request to server
-//     - throws all socket error and 
-//       data error to server
-//     - Responsible to under network handling
+// Connection connect server to underlying network.
+// It contains/handle FastCGI/CGI protocol logic as well
+// All errors from network or data coming from network
+// should be caught here. 
 public protocol Connection {
     init(sock: Int32, server: Server)
     func loop(once: Bool)

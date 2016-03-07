@@ -8,6 +8,7 @@
 
 import Foundation
 
+// InputStorage represent FCGI/CGI applications' STDIN
 public protocol InputStorage {
     init(conn: Connection)
     init(sock: Int32)

@@ -10,9 +10,6 @@
 		410378DC1C8A86A00064FCD0 /* OutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5DE1C893C190077BA96 /* OutputStream.swift */; };
 		410378DD1C8A86A00064FCD0 /* RawOutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5DF1C893C190077BA96 /* RawOutputStream.swift */; };
 		410378DE1C8A86A30064FCD0 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E11C893C190077BA96 /* Environment.swift */; };
-		410378DF1C8A86A30064FCD0 /* ProtocolConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E21C893C190077BA96 /* ProtocolConstant.swift */; };
-		410378E01C8A86A30064FCD0 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E31C893C190077BA96 /* Record.swift */; };
-		410378E11C8A86A30064FCD0 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E41C893C190077BA96 /* Request.swift */; };
 		410378E31C8A86A60064FCD0 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E71C893C190077BA96 /* Server.swift */; };
 		410378E41C8A86A90064FCD0 /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5E91C893C190077BA96 /* Socket.swift */; };
 		410378E51C8A86A90064FCD0 /* String+BytesConvert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5EA1C893C190077BA96 /* String+BytesConvert.swift */; };
@@ -120,6 +117,12 @@
 		41F5AF591C8D3B780071C8AE /* CGIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F5AF581C8D3B780071C8AE /* CGIRequest.swift */; };
 		41F5AF611C8D4F8D0071C8AE /* RawConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F5AF601C8D4F8D0071C8AE /* RawConnection.swift */; };
 		41F5AF631C8D51AA0071C8AE /* CGITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F5AF621C8D51AA0071C8AE /* CGITests.swift */; };
+		41F5AF641C8D5F860071C8AE /* RawConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F5AF601C8D4F8D0071C8AE /* RawConnection.swift */; };
+		41F5AF651C8D5F880071C8AE /* MultiplexConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4129453C1C8C7042005897CA /* MultiplexConnection.swift */; };
+		41F5AF661C8D5F880071C8AE /* RawConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F5AF601C8D4F8D0071C8AE /* RawConnection.swift */; };
+		41F5AF671C8D5F8F0071C8AE /* FCGIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F5AF561C8D3A260071C8AE /* FCGIRequest.swift */; };
+		41F5AF681C8D5F8F0071C8AE /* CGIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F5AF581C8D3B780071C8AE /* CGIRequest.swift */; };
+		41F5AF6B1C8D5F960071C8AE /* CGIServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F5AF541C8D1B180071C8AE /* CGIServer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -546,7 +549,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				410378DC1C8A86A00064FCD0 /* OutputStream.swift in Sources */,
-				410378DF1C8A86A30064FCD0 /* ProtocolConstant.swift in Sources */,
+				41F5AF661C8D5F880071C8AE /* RawConnection.swift in Sources */,
 				410378F01C8A86B90064FCD0 /* Application.swift in Sources */,
 				410378EC1C8A86B20064FCD0 /* OutputStorage.swift in Sources */,
 				410378E81C8A86AB0064FCD0 /* InputStorage.swift in Sources */,
@@ -555,9 +558,8 @@
 				410378EF1C8A86B70064FCD0 /* Exception.swift in Sources */,
 				410378EA1C8A86AF0064FCD0 /* RawInputStream.swift in Sources */,
 				410378EB1C8A86B20064FCD0 /* BufferedOutputStorage.swift in Sources */,
-				410378E01C8A86A30064FCD0 /* Record.swift in Sources */,
 				410378DE1C8A86A30064FCD0 /* Environment.swift in Sources */,
-				410378E11C8A86A30064FCD0 /* Request.swift in Sources */,
+				41F5AF651C8D5F880071C8AE /* MultiplexConnection.swift in Sources */,
 				410378EE1C8A86B70064FCD0 /* SingleConnection.swift in Sources */,
 				410378ED1C8A86B70064FCD0 /* Connection.swift in Sources */,
 				410378E51C8A86A90064FCD0 /* String+BytesConvert.swift in Sources */,
@@ -575,11 +577,14 @@
 				412945431C8C913F005897CA /* Application.swift in Sources */,
 				410379031C8A87690064FCD0 /* InputStream.swift in Sources */,
 				410379001C8A87630064FCD0 /* Exception.swift in Sources */,
+				41F5AF681C8D5F8F0071C8AE /* CGIRequest.swift in Sources */,
 				410379101C8A87760064FCD0 /* String+BytesConvert.swift in Sources */,
+				41F5AF641C8D5F860071C8AE /* RawConnection.swift in Sources */,
 				410379091C8A87710064FCD0 /* Environment.swift in Sources */,
 				410379061C8A876C0064FCD0 /* OutputStorage.swift in Sources */,
 				410379111C8A87760064FCD0 /* Utils.swift in Sources */,
 				410379021C8A87650064FCD0 /* InputStorage.swift in Sources */,
+				41F5AF6B1C8D5F960071C8AE /* CGIServer.swift in Sources */,
 				4103790B1C8A87710064FCD0 /* Record.swift in Sources */,
 				4103790C1C8A87710064FCD0 /* Request.swift in Sources */,
 				4103790A1C8A87710064FCD0 /* ProtocolConstant.swift in Sources */,
@@ -591,6 +596,7 @@
 				4103790E1C8A87740064FCD0 /* Server.swift in Sources */,
 				410378F81C8A873A0064FCD0 /* ProtocolTests.swift in Sources */,
 				410379051C8A876C0064FCD0 /* BufferedOutputStorage.swift in Sources */,
+				41F5AF671C8D5F8F0071C8AE /* FCGIRequest.swift in Sources */,
 				410379081C8A876E0064FCD0 /* RawOutputStream.swift in Sources */,
 				410378FF1C8A87630064FCD0 /* SingleConnection.swift in Sources */,
 				410379071C8A876E0064FCD0 /* OutputStream.swift in Sources */,

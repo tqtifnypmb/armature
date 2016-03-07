@@ -12,6 +12,7 @@ internal final class Socket {
     
     var socketFd = Int32(-1)
 
+    #if DEBUG
     class func createBoundTcpSocket(addr: String, port: UInt16, maxListenQueue: Int32 = SOMAXCONN) throws -> Socket {
         var addrToBind = sockaddr_in()
         addrToBind.sin_family = sa_family_t(AF_INET)
@@ -47,6 +48,12 @@ internal final class Socket {
         return try Socket.doCreateSocket(AF_UNIX, addrToBind: toBind, addrLen: socklen_t(addrLen), maxListenQueue: maxListenQueue)
     }
     
+    private class func socketaddr_cast(p: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<sockaddr> {
+    return UnsafeMutablePointer<sockaddr>(p)
+    }
+    
+    #endif
+    
     func acceptConnection(remoteAddr: UnsafeMutablePointer<sockaddr> = nil, addrLen: UnsafeMutablePointer<socklen_t> = nil) throws -> Int32 {
         assert(self.socketFd != -1)
         let conn = accept(self.socketFd, remoteAddr, addrLen)
@@ -58,8 +65,8 @@ internal final class Socket {
     }
     
     // Poll on listened socket wait for connection
-    // if timeout return false
-    func waitForConnection(timeout: UnsafeMutablePointer<timeval>) throws -> Bool {
+    // if timeout return false,  otherwise return true
+    func waitForConnection() throws -> Bool {
         assert(self.socketFd != -1)
         
         var nfd = pollfd()
@@ -106,9 +113,5 @@ internal final class Socket {
         let sock = Socket()
         sock.socketFd = socketFd
         return sock
-    }
-    
-    private class func socketaddr_cast(p: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<sockaddr> {
-        return UnsafeMutablePointer<sockaddr>(p)
     }
 }

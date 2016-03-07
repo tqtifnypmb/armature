@@ -35,9 +35,12 @@ public class FCGIServer: Server {
         }
     }
     
-    // For debug only
+    #if DEBUG
+    
     public var debug = false;
     public var unix_socket_path = ""
+    
+    #endif
     
     public func run(app: Application) {
         self.app = app
@@ -46,6 +49,8 @@ public class FCGIServer: Server {
             self.valid_server_addrs = web_server_addrs.componentsSeparatedByString(",")
         }
         
+        #if DEBUG
+            
         if self.debug {
             do {    
                 unlink(unix_socket_path)
@@ -54,33 +59,32 @@ public class FCGIServer: Server {
                 print(error)
                 return
             }
-        } else {
-            self.sock = Socket()
-            self.sock.socketFd = 0
         }
+        #endif
         
+        self.sock.socketFd = FCGI_LISTENSOCK_FILENO
         defer {
             self.sock.closeSocket()
-        }
-        
-        if self.isThreaded {
-            defer {
+            
+            if self.isThreaded {
                 self.connectionsQueue.waitUntilAllOperationsAreFinished()
             }
         }
         
         while true {
             do {
-                // wait indefinitely
                 var remote_addr = sockaddr()
                 var addr_len: socklen_t = 0
+                
+                // wait indefinitely
+                try self.sock.waitForConnection()
                 let conn = try self.sock.acceptConnection(&remote_addr, addrLen: &addr_len)
                 
-                if !self.debug {
-                    guard Utils.isValidRemoteAddr(self.valid_server_addrs, to_check: &remote_addr) else {
+                #if !DEBUG
+                guard Utils.isValidRemoteAddr(self.valid_server_addrs, to_check: &remote_addr) else {
                         continue
                     }
-                }
+                #endif
                 
                 let connection = self.connectionType.init(sock: conn, server: self)
                 
@@ -98,9 +102,11 @@ public class FCGIServer: Server {
         }
     }
     
+    #if DEBUG
     public func forceStop() {
         self.sock.closeSocket()
     }
+    #endif
     
     public func handleRequest(req: Request) throws {
         let request = req as! FCGIRequest
