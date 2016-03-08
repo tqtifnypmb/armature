@@ -33,7 +33,6 @@ public class RawConnection: Connection {
         try self.outputStream.write(&data)
     }
     
-    public func abortRequest(reqId: UInt16) throws {}
     public func loop(once: Bool) {}
     public func halt() {}
 }

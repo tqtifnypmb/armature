@@ -254,8 +254,6 @@ extension Record {
         if let type = RecordType(rawValue: buffer[1]) {
             record.type = type
         } else {
-            // Ignore unsupport request type
-            // FIXME log may be necessary
             try skip(sock, len: UInt32(record.contentLength) + paddingLength)
             throw DataError.InvalidData
         }

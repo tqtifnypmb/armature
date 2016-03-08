@@ -12,14 +12,22 @@ public class FCGIRequest: Request {
     public var requestId: UInt16 = 0
     var role: Role = .RESPONDER
     var flags: UInt8 = 0
+    var connection: Connection!
     
     public var STDIN: InputStorage
     public var STDOUT: OutputStorage
     public var STDERR: OutputStorage
     public var DATA: [UInt8]?
-    public var params: [String : String] = [:]
-    var connection: Connection!
-    var aborted = false
+    public var isRunning: Bool = false
+    
+    private var aborted = false
+    public var params: [String : String] = [:] {
+        didSet {
+            if let cnt = params["CONTENT_LENGTH"], let cntLen = UInt16(cnt) {
+                self.STDIN.contentLength = cntLen
+            }
+        }
+    }
     
     init(record: Record, conn: Connection) throws {
         assert(record.type == .BEGIN_REQUEST)
@@ -45,15 +53,16 @@ public class FCGIRequest: Request {
         self.role = role
     }
     
-    func setParams(params: [String : String]) {
-        self.params = params
-        if let cnt = params["CONTENT_LENGTH"], let cntLen = UInt16(cnt) {
-            self.STDIN.contentLength = cntLen
-        }
+    func abort() {
+        self.aborted = true
     }
     
-    func abort() {
-        
+    func setRunning() {
+        self.isRunning = true
+    }
+    
+    public var isAborted: Bool {
+        return self.aborted
     }
     
     func finishHandling(appStatus: Int32, protoStatus: ProtocolStatus) throws {

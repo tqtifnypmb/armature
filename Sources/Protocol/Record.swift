@@ -28,7 +28,6 @@ public final class Record {
             record.type = type
         } else {
             // Ignore unsupport request type
-            // FIXME: log may be necessary
             try skip(conn, len: UInt32(record.contentLength) + paddingLength)
             return nil
         }

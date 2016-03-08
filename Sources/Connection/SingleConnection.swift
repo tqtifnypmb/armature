@@ -57,10 +57,6 @@ public class SingleConnection: Connection {
         try self.outputStream.write(&data)
     }
     
-    public func abortRequest(reqId: UInt16) throws {
-        self.halt()
-    }
-    
     public func halt() {
         self.stop = true
     }
@@ -83,31 +79,24 @@ public class SingleConnection: Connection {
         switch record.type {
         case .GET_VALUE:
             try self.handleGetValue(record)
-            break
             
         case .ABORT_REQUEST:
             try self.handleAbortRequest(record)
-            break
             
         case .PARAMS:
             try self.handleParams(record)
-            break
             
         case .STDIN:
             self.handleStdIn(record)
-            break
             
         case .BEGIN_REQUEST:
             try self.handleBeginRequest(record)
-            break
             
         case .DATA:
             self.handleData(record)
-            break
             
         default:
             try self.handleUnknownType(record)
-            break
         }
     }
     
@@ -134,20 +123,16 @@ public class SingleConnection: Connection {
             switch name {
             case FCGI_MAX_CONNS:
                 query[name] = String(self.server.maxConnections)
-                break
                 
             case FCGI_MAX_REQS:
                 query[name] = String(self.server.maxRequests)
-                break
                 
             case FCGI_MPXS_CONNS:
                 query[name] = String(isMultiplex)
-                break
                 
-            default:
+            default: break
                 // Unknown query
                 // Ignore it
-                return
             }
         }
         ret.contentData = Utils.encodeNameValueData(query)
@@ -155,7 +140,7 @@ public class SingleConnection: Connection {
         try ret.writeTo(self)
     }
     
-    private func handleAbortRequest(record: Record) throws {
+    func handleAbortRequest(record: Record) throws {
         //Just close the connection
         self.halt()
     }
@@ -173,7 +158,7 @@ public class SingleConnection: Connection {
         }
         
         let params = Utils.parseNameValueData(cntData)
-        req.setParams(params)
+        req.params = params
     }
     
     func handleStdIn(record: Record) {

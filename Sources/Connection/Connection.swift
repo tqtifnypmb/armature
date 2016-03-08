@@ -18,5 +18,4 @@ public protocol Connection {
     func halt()
     func readInto(inout buffer: [UInt8]) throws -> Int
     func write(inout data: [UInt8]) throws
-    func abortRequest(reqId: UInt16) throws
 }

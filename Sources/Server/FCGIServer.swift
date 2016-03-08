@@ -45,10 +45,6 @@ public class FCGIServer: Server {
     public func run(app: Application) {
         self.app = app
         
-        if let web_server_addrs = NSProcessInfo().environment["FCGI_WEB_SERVER_ADDRS"] {
-            self.valid_server_addrs = web_server_addrs.componentsSeparatedByString(",")
-        }
-        
         #if DEBUG
             
         if self.debug {
@@ -60,15 +56,22 @@ public class FCGIServer: Server {
                 return
             }
         }
-        #endif
+        #else
         
         self.sock.socketFd = FCGI_LISTENSOCK_FILENO
+            
+        #endif
+        
         defer {
             self.sock.closeSocket()
             
             if self.isThreaded {
                 self.connectionsQueue.waitUntilAllOperationsAreFinished()
             }
+        }
+        
+        if let web_server_addrs = NSProcessInfo().environment["FCGI_WEB_SERVER_ADDRS"] {
+            self.valid_server_addrs = web_server_addrs.componentsSeparatedByString(",")
         }
         
         while true {
@@ -79,12 +82,10 @@ public class FCGIServer: Server {
                 // wait indefinitely
                 try self.sock.waitForConnection()
                 let conn = try self.sock.acceptConnection(&remote_addr, addrLen: &addr_len)
-                
-                #if !DEBUG
+ 
                 guard Utils.isValidRemoteAddr(self.valid_server_addrs, to_check: &remote_addr) else {
                         continue
-                    }
-                #endif
+                }
                 
                 let connection = self.connectionType.init(sock: conn, server: self)
                 
@@ -109,7 +110,11 @@ public class FCGIServer: Server {
     #endif
     
     public func handleRequest(req: Request) throws {
-        let request = req as! FCGIRequest
+        guard let request = req as? FCGIRequest else {
+            return
+        }
+
+        request.setRunning()
         
         guard let app = self.app else {
             return

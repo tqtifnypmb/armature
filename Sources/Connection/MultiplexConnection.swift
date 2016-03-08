@@ -65,10 +65,8 @@ public class MultiplexConnection: SingleConnection {
         do {
             let req = try FCGIRequest(record: record, conn: self)
             self.reqLock.lock()
-            defer {
-                self.reqLock.unlock()
-            }
             self.requests[record.requestId] = req
+            self.reqLock.unlock()
         } catch DataError.UnknownRole {
             // let unknown role error throws will tear down the connection
             return
@@ -86,6 +84,23 @@ public class MultiplexConnection: SingleConnection {
         }
         self.curRequest = req
         super.handleData(record)
+    }
+    
+    override func handleAbortRequest(record: Record) throws {
+        self.reqLock.lock()
+        defer {
+            self.reqLock.unlock()
+        }
+        
+        guard let req = self.requests[record.requestId] else {
+            return
+        }
+        
+        if req.isRunning {
+            req.abort()
+        } else {
+            self.requests.removeValueForKey(record.requestId)
+        }
     }
     
     override func serveRequest(req: FCGIRequest) throws {

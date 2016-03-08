@@ -96,6 +96,10 @@ public class Environment {
         return self.request.DATA
     }
     
+    var is_request_aborted: Bool {
+        return self.request.isAborted
+    }
+    
     subscript(key: String) -> String? {
         return self.request.params[key]
     }

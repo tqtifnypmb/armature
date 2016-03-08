@@ -15,10 +15,12 @@ import Foundation
 //      - Consider signals handling issues
 //      - Setup the whole environment
 public protocol Server {
+    
     func run(app: Application)
     
     // FIXME: This funciton should be hidden from user
     func handleRequest(request: Request) throws
     var maxConnections: UInt64 {get set}
     var maxRequests: UInt64 {get set}
+    var connectionType: Connection.Type {get set}
 }

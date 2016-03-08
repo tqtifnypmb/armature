@@ -30,7 +30,9 @@ public class CGIServer: Server {
     }
     
     public func handleRequest(req: Request) throws {
-        let request = req as! CGIRequest
+        guard let request = req as? CGIRequest else {
+            return
+        }
         
         guard let app = self.app else {
             return

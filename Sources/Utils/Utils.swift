@@ -21,7 +21,6 @@ internal final class Utils {
         }
     }
     
-    // FIXME: interface should be better
     static func writeN(sock: Int32, data: UnsafeMutablePointer<Void>, n: UInt32) throws {
         var remain = n
         while remain > 0 {

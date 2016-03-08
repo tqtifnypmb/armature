@@ -14,20 +14,28 @@ public class CGIRequest: Request {
     public var STDOUT: OutputStorage
     public var STDERR: OutputStorage
     public var DATA: [UInt8]?
-    public var params: [String : String] = [:]
+    public var params: [String : String] = [:] {
+        didSet {
+            if let cnt = params["CONTENT_LENGTH"], let cntLen = UInt16(cnt) {
+                self.STDIN.contentLength = cntLen
+            }
+        }
+    }
+    public var isRunning: Bool = false
     
     init() {
         self.STDIN = BufferedInputStorage(sock: STDIN_FILENO)
         self.STDOUT = BufferedOutputStorage(sock: STDOUT_FILENO, isErr: false)
         self.STDERR = BufferedOutputStorage(sock: STDERR_FILENO, isErr: true)
         self.params = NSProcessInfo().environment
-        if let cnt = params["CONTENT_LENGTH"], let cntLen = UInt16(cnt) {
-            self.STDIN.contentLength = cntLen
-        }
     }
     
     func finishHandling() throws {
         try self.STDOUT.flush()
         try self.STDERR.flush()
+    }
+    
+    public var isAborted: Bool {
+        return false
     }
 }
