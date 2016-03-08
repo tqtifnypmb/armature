@@ -20,7 +20,7 @@ public protocol Server {
     
     // FIXME: This funciton should be hidden from user
     func handleRequest(request: Request) throws
-    var maxConnections: UInt64 {get set}
-    var maxRequests: UInt64 {get set}
+    var maxConnections: rlim_t {get set}
+    var maxRequests: rlim_t {get set}
     var connectionType: Connection.Type {get set}
 }

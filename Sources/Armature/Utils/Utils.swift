@@ -8,7 +8,8 @@
 
 import Foundation
 
-internal final class Utils {
+
+public final class Utils {
     static func readN(sock: Int32, buffer: UnsafeMutablePointer<Void>, n: UInt32) throws {
         var remain = n
         let ptr = buffer
@@ -128,9 +129,11 @@ internal final class Utils {
         return lenInBytes
     }
     
+#if os(OSX) || os(iOS)
     static func isLittleEndian() -> Bool {
         return Int(OSHostByteOrder()) == OSLittleEndian
     }
+#endif
     
     static func encodeAppStatus(status: Int32) -> [UInt8] {
         return [UInt8(UInt32(status) & 0xFF000000), UInt8(UInt32(status) & 0x00FF0000), UInt8(UInt32(status) & 0x0000FF00), UInt8(UInt32(status) & 0x000000FF)]

@@ -6,6 +6,10 @@
 //  Copyright © 2016 Tqtifnypmb. All rights reserved.
 //
 
+#if os(Linux)
+    import Glibc
+#endif
+
 import Foundation
 
 public class CGIRequest: Request {
@@ -27,7 +31,7 @@ public class CGIRequest: Request {
         self.STDIN = BufferedInputStorage(sock: STDIN_FILENO)
         self.STDOUT = BufferedOutputStorage(sock: STDOUT_FILENO, isErr: false)
         self.STDERR = BufferedOutputStorage(sock: STDERR_FILENO, isErr: true)
-        self.params = NSProcessInfo().environment
+        self.params = NSProcessInfo.processInfo().environment
     }
     
     func finishHandling() throws {

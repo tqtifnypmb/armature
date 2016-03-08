@@ -10,8 +10,8 @@ import Foundation
 
 public class FCGIServer: Server {
 
-    public var maxConnections: UInt64
-    public var maxRequests: UInt64
+    public var maxConnections: rlim_t
+    public var maxRequests: rlim_t
     public var connectionType: Connection.Type = SingleConnection.self
     private var sock: Socket = Socket()
     private var app: Application?
@@ -22,11 +22,20 @@ public class FCGIServer: Server {
     
     init(threaded: Bool = false) {
         var rLimit = rlimit()
-        if getrlimit(RLIMIT_NOFILE, &rLimit) != -1 {
-            self.maxConnections = rLimit.rlim_cur
-        } else {
-            self.maxConnections = 100
-        }
+        #if os(Linux)
+            if getrlimit(Int32(RLIMIT_NOFILE.rawValue), &rLimit) != -1 {
+                self.maxConnections = rLimit.rlim_cur
+            } else {
+                self.maxConnections = 100
+            }
+        #else
+            if getrlimit(RLIMIT_NOFILE, &rLimit) != -1 {
+                self.maxConnections = rLimit.rlim_cur
+            } else {
+                self.maxConnections = 100
+            }
+        #endif
+
         self.maxRequests = self.maxConnections
         self.isThreaded = threaded
         
@@ -70,7 +79,7 @@ public class FCGIServer: Server {
             }
         }
         
-        if let web_server_addrs = NSProcessInfo().environment["FCGI_WEB_SERVER_ADDRS"] {
+        if let web_server_addrs = NSProcessInfo.processInfo().environment["FCGI_WEB_SERVER_ADDRS"] {
             self.valid_server_addrs = web_server_addrs.componentsSeparatedByString(",")
         }
         

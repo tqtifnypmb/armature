@@ -6,9 +6,13 @@
 //  Copyright © 2016 Tqtifnypmb. All rights reserved.
 //
 
-import Foundation
+#if os(Linux)
+    import Glibc
+#else
+    import Foundation
+#endif
 
-internal final class Socket {
+public final class Socket {
     
     var socketFd = Int32(-1)
 
@@ -90,7 +94,12 @@ internal final class Socket {
     }
 
     private class func doCreateSocket(domain: Int32, addrToBind: UnsafeMutablePointer<sockaddr>, addrLen: socklen_t, maxListenQueue: Int32) throws -> Socket {
-        let socketFd = socket(domain, SOCK_STREAM, 0)
+        #if os(Linux)
+            let socketFd = socket(domain, Int32(SOCK_STREAM.rawValue), 0)
+        #else
+            let socketFd = socket(domain, SOCK_STREAM, 0)
+        #endif
+
         guard socketFd != -1 else {
             throw SocketError.UnableToCreateSocket(Socket.getErrorDescription())
         }

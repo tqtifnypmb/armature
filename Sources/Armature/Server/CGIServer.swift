@@ -9,8 +9,8 @@
 import Foundation
 
 public class CGIServer: Server {
-    public var maxConnections: UInt64 = 0
-    public var maxRequests: UInt64 = 0
+    public var maxConnections: rlim_t = 0
+    public var maxRequests: rlim_t = 0
     public var connectionType: Connection.Type = SingleConnection.self
     private var app: Application?
     
