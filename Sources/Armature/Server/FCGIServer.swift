@@ -20,7 +20,7 @@ public class FCGIServer: Server {
     private var connectionsQueue: NSOperationQueue!
     private var valid_server_addrs: [String]?
     
-    init(threaded: Bool = false) {
+    public init(threaded: Bool = false) {
 
         var rLimit = rlimit()
         #if os(Linux)

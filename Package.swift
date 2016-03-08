@@ -7,6 +7,12 @@ let package = Package(
         Target(
             name: "Armature" ,
             dependencies: []
+        ),
+        Target(
+            name: "ArmatureDev" ,
+            dependencies: [
+                .Target(name: "Armature")
+            ]
         )
     ]
 )

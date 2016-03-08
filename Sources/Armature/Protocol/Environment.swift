@@ -12,11 +12,11 @@ public class Environment {
     
     // Standard request meta-variables
     // see [RFC 3875]
-    var AUTH_TYPE: String? {
+    public var AUTH_TYPE: String? {
         return self.request.params["AUTH_TYPE"]
     }
     
-    var CONTENT_LENGTH: UInt {
+    public var CONTENT_LENGTH: UInt {
         if let value = self.request.params["CONTENT_LENGTH"] , let len = UInt(value) {
             return len
         } else {
@@ -24,55 +24,55 @@ public class Environment {
         }
     }
     
-    var CONTENT_TYPE: String? {
+    public var CONTENT_TYPE: String? {
         return self.request.params["CONTENT_TYPE"]
     }
     
-    var GATEWAY_INTERFACE: String? {
+    public var GATEWAY_INTERFACE: String? {
         return self.request.params["GATEWAY_INTERFACE"]
     }
     
-    var PATH_INFO: String? {
+    public var PATH_INFO: String? {
         return self.request.params["PATH_INFO"]
     }
     
-    var PATH_TRANSLATED: String? {
+    public var PATH_TRANSLATED: String? {
         return self.request.params["PATH_TRANSLATED"]
     }
     
-    var QUERY_STRING: String? {
+    public var QUERY_STRING: String? {
         return self.request.params["QUERY_STRING"]
     }
     
-    var REMOTE_ADDR: String? {
+    public var REMOTE_ADDR: String? {
         return self.request.params["REMOTE_ADDR"]
     }
     
-    var REMOTE_HOST: String? {
+    public var REMOTE_HOST: String? {
         return self.request.params["REMOTE_HOST"]
     }
     
-    var REMOTE_IDENT: String? {
+    public var REMOTE_IDENT: String? {
         return self.request.params["REMOTE_IDENT"]
     }
     
-    var REMOTE_USER: String? {
+    public var REMOTE_USER: String? {
         return self.request.params["REMOTE_USER"]
     }
     
-    var REQUEST_MOTHOD: String? {
+    public var REQUEST_MOTHOD: String? {
         return self.request.params["REQUEST_MOTHOD"]
     }
     
-    var SCRIPT_NAME: String? {
+    public var SCRIPT_NAME: String? {
         return self.request.params["SCRIPT_NAME"]
     }
     
-    var SERVER_NAME: String? {
+    public var SERVER_NAME: String? {
         return self.request.params["SERVER_NAME"]
     }
     
-    var SERVER_PORT: UInt16 {
+    public var SERVER_PORT: UInt16 {
         if let value = self.request.params["SERVER_PORT"] , let port = UInt16(value) {
             return port
         } else {
@@ -80,35 +80,35 @@ public class Environment {
         }
     }
     
-    var SERVER_PROTOCOL: String? {
+    public var SERVER_PROTOCOL: String? {
         return self.request.params["SERVER_PROTOCOL"]
     }
     
-    var SERVER_SOFTWARE: String? {
+    public var SERVER_SOFTWARE: String? {
         return self.request.params["SERVER_SOFTWARE"]
     }
     
-    var STDIN: InputStorage {
+    public var STDIN: InputStorage {
         return self.request.STDIN
     }
 
-    var DATA: [UInt8]? {
+    public var DATA: [UInt8]? {
         return self.request.DATA
     }
     
-    var is_request_aborted: Bool {
+    public var is_request_aborted: Bool {
         return self.request.isAborted
     }
     
-    subscript(key: String) -> String? {
+    public subscript(key: String) -> String? {
         return self.request.params[key]
     }
     
-    func extra(key: String) -> String? {
+    public func extra(key: String) -> String? {
         return self[key]
     }
     
-    let request: Request
+    public let request: Request
     init(request: Request) {
         self.request = request
     }
