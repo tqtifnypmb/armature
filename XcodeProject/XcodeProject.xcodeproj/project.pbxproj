@@ -49,6 +49,9 @@
 		412945421C8C9111005897CA /* Multi_Connections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 412945411C8C9111005897CA /* Multi_Connections.swift */; };
 		412945431C8C913F005897CA /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5CF1C893C190077BA96 /* Application.swift */; };
 		412945441C8C9144005897CA /* FCGIServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418E0F251C89E6110007475F /* FCGIServer.swift */; };
+		41414B121C8F26490018F2C6 /* FCGIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F5AF561C8D3A260071C8AE /* FCGIRequest.swift */; };
+		41414B131C8F26490018F2C6 /* CGIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F5AF581C8D3B780071C8AE /* CGIRequest.swift */; };
+		41414B141C8F26560018F2C6 /* RawConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F5AF601C8D4F8D0071C8AE /* RawConnection.swift */; };
 		4189E5EC1C893C190077BA96 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5CF1C893C190077BA96 /* Application.swift */; };
 		4189E5ED1C893C190077BA96 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5CF1C893C190077BA96 /* Application.swift */; };
 		4189E5EE1C893C190077BA96 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4189E5CF1C893C190077BA96 /* Application.swift */; };
@@ -644,6 +647,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41414B141C8F26560018F2C6 /* RawConnection.swift in Sources */,
 				4189E5FF1C893C190077BA96 /* InputStream.swift in Sources */,
 				4189E5ED1C893C190077BA96 /* Application.swift in Sources */,
 				4189E5F61C893C190077BA96 /* Exception.swift in Sources */,
@@ -660,8 +664,10 @@
 				4189E6231C893C190077BA96 /* Socket.swift in Sources */,
 				4189E6201C893C190077BA96 /* Server.swift in Sources */,
 				41EE36801C87F4F20091844C /* UnitTests.swift in Sources */,
+				41414B121C8F26490018F2C6 /* FCGIRequest.swift in Sources */,
 				4189E6051C893C190077BA96 /* BufferedOutputStorage.swift in Sources */,
 				4189E60E1C893C190077BA96 /* RawOutputStream.swift in Sources */,
+				41414B131C8F26490018F2C6 /* CGIRequest.swift in Sources */,
 				4189E5F31C893C190077BA96 /* SingleConnection.swift in Sources */,
 				4189E60B1C893C190077BA96 /* OutputStream.swift in Sources */,
 				4189E5F91C893C190077BA96 /* BufferedInputStorage.swift in Sources */,

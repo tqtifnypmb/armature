@@ -176,7 +176,7 @@ public class SingleConnection: Connection {
             let req = try FCGIRequest(record: record, conn: self)
             self.curRequest = req
         } catch DataError.UnknownRole {
-            // let unknown role error throws will tear down the connection
+            // let unknown role error throw will tear down the connection
             return
         }
     }
