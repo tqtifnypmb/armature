@@ -43,8 +43,8 @@ class MyApp: Application {
     }
 }
 
-let server = FCGIServer()
-//let server = CGIServer()
+//let server = FCGIServer()
+let server = CGIServer()
 let app = MyApp()
 server.run(app)
 assert(false)

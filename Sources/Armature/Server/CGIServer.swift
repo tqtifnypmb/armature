@@ -14,7 +14,7 @@ public class CGIServer: Server {
     public var connectionType: Connection.Type = SingleConnection.self
     private var app: Application?
     
-    init() {
+    public init() {
         
     }
     
