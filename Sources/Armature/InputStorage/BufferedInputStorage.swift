@@ -8,7 +8,7 @@
 
 import Foundation
 
-class BufferedInputStorage: InputStorage {
+final class BufferedInputStorage: InputStorage {
     
     // This number come from flup
     private let maxBuffer = 102400 - 8192

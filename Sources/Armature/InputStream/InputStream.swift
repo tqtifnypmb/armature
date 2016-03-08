@@ -12,7 +12,7 @@ import Foundation
 // know nothing about protocol logic.
 // InputStream exposes a python-file-object-like interface
 // to users
-public protocol InputStream {
+protocol InputStream {
     init(sock: Int32)
     func readInto(inout buffer: [UInt8]) throws -> Int
     func readN(data: UnsafeMutablePointer<Void>, n: UInt32) throws

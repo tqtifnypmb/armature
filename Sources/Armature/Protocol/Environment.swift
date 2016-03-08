@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Environment {
+public final class Environment {
     
     // Standard request meta-variables
     // see [RFC 3875]

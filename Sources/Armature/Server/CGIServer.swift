@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class CGIServer: Server {
+public final class CGIServer: Server {
     public var maxConnections: rlim_t = 0
     public var maxRequests: rlim_t = 0
     public var connectionType: Connection.Type = SingleConnection.self
@@ -29,7 +29,7 @@ public class CGIServer: Server {
         }
     }
     
-    public func handleRequest(req: Request) throws {
+    func handleRequest(req: Request) throws {
         guard let request = req as? CGIRequest else {
             return
         }

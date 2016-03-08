@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal enum RecordType: UInt8 {
+enum RecordType: UInt8 {
     case BEGIN_REQUEST = 1
     case ABORT_REQUEST = 2
     case END_REQUEST = 3
@@ -22,13 +22,13 @@ internal enum RecordType: UInt8 {
     case UNKNOWN_TYPE = 11
 }
 
-internal enum Role: UInt16 {
+enum Role: UInt16 {
     case RESPONDER = 1
     case FILTER = 2
     case AUTHORIZER = 3
 }
 
-internal enum ProtocolStatus: UInt8 {
+enum ProtocolStatus: UInt8 {
     case REQUEST_COMPLETE = 0
     case CANT_MPX_CONN = 1
     case OVERLOADED = 2

@@ -8,20 +8,20 @@
 
 import Foundation
 
-public class CGIRequest: Request {
-    public var requestId: UInt16 = 0
-    public var STDIN: InputStorage
-    public var STDOUT: OutputStorage
-    public var STDERR: OutputStorage
-    public var DATA: [UInt8]?
-    public var params: [String : String] = [:] {
+final class CGIRequest: Request {
+    var requestId: UInt16 = 0
+    var STDIN: InputStorage
+    var STDOUT: OutputStorage
+    var STDERR: OutputStorage
+    var DATA: [UInt8]?
+    var params: [String : String] = [:] {
         didSet {
             if let cnt = params["CONTENT_LENGTH"], let cntLen = UInt16(cnt) {
                 self.STDIN.contentLength = cntLen
             }
         }
     }
-    public var isRunning: Bool = false
+    var isRunning: Bool = false
     
     init() {
         self.STDIN = BufferedInputStorage(sock: STDIN_FILENO)
@@ -35,7 +35,7 @@ public class CGIRequest: Request {
         try self.STDERR.flush()
     }
     
-    public var isAborted: Bool {
+    var isAborted: Bool {
         return false
     }
 }

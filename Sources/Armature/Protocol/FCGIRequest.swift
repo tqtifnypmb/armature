@@ -8,20 +8,20 @@
 
 import Foundation
 
-public class FCGIRequest: Request {
-    public var requestId: UInt16 = 0
+final class FCGIRequest: Request {
+    var requestId: UInt16 = 0
     var role: Role = .RESPONDER
     var flags: UInt8 = 0
     var connection: Connection!
     
-    public var STDIN: InputStorage
-    public var STDOUT: OutputStorage
-    public var STDERR: OutputStorage
-    public var DATA: [UInt8]?
-    public var isRunning: Bool = false
+    var STDIN: InputStorage
+    var STDOUT: OutputStorage
+    var STDERR: OutputStorage
+    var DATA: [UInt8]?
+    var isRunning: Bool = false
     
     private var aborted = false
-    public var params: [String : String] = [:] {
+    var params: [String : String] = [:] {
         didSet {
             if let cnt = params["CONTENT_LENGTH"], let cntLen = UInt16(cnt) {
                 self.STDIN.contentLength = cntLen
@@ -61,7 +61,7 @@ public class FCGIRequest: Request {
         self.isRunning = true
     }
     
-    public var isAborted: Bool {
+    var isAborted: Bool {
         return self.aborted
     }
     

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class RawInputStream: InputStream {
+final class RawInputStream: InputStream {
     private let sock: Int32
     required init(sock: Int32) {
         self.sock = sock

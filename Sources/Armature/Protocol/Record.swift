@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class Record {
+final class Record {
   
     var type: RecordType = .UNKNOWN_TYPE
     var requestId: UInt16 = 0

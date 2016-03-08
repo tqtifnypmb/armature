@@ -8,11 +8,12 @@
 
 import Foundation
 
-public class FCGIServer: Server {
+public final class FCGIServer: Server {
 
     public var maxConnections: rlim_t
     public var maxRequests: rlim_t
     public var connectionType: Connection.Type = SingleConnection.self
+
     private var sock: Socket = Socket()
     private var app: Application?
     
@@ -119,7 +120,7 @@ public class FCGIServer: Server {
     }
     #endif
     
-    public func handleRequest(req: Request) throws {
+    func handleRequest(req: Request) throws {
         guard let request = req as? FCGIRequest else {
             return
         }

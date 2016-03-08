@@ -11,7 +11,7 @@ import Foundation
 public class SingleConnection: Connection {
     var curRequest: FCGIRequest?
     var isMultiplex: Int
-    public var server: Server
+    var server: Server
     
     private let sock: Int32
     private var stop = false
@@ -192,7 +192,8 @@ public class SingleConnection: Connection {
     }
     
     func serveRequest(req: FCGIRequest) throws {
-        try self.server.handleRequest(req)
+        let fcgiServer = self.server as! FCGIServer
+        try fcgiServer.handleRequest(req)
         self.curRequest = nil
     }
 }

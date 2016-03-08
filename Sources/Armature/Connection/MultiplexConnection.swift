@@ -106,7 +106,8 @@ public class MultiplexConnection: SingleConnection {
     override func serveRequest(req: FCGIRequest) throws {
         self.connectionQueue.addOperationWithBlock() {
             do {
-                try self.server.handleRequest(req)
+                let fcgiServer = self.server as! FCGIServer
+                try fcgiServer.handleRequest(req)
             } catch {
                 // One request failed , broke down the whole connection
                 self.halt()

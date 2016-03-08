@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal final class Socket {
+final class Socket {
     
     var socketFd = Int32(-1)
 
