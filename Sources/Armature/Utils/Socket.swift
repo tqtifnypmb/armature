@@ -6,7 +6,11 @@
 //  Copyright © 2016 Tqtifnypmb. All rights reserved.
 //
 
-import Foundation
+#if os(Linux)
+    import Glibc
+#else
+    import Foundation
+#endif
 
 final class Socket {
     
