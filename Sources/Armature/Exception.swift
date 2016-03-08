@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal enum SocketError: ErrorType {
+public enum SocketError: ErrorType {
     case UnableToCreateSocket(String)
     case UnableToBindSocket(String)
     case UnableToListenSocket(String)
@@ -19,7 +19,7 @@ internal enum SocketError: ErrorType {
 }
 
 
-internal enum DataError: ErrorType {
+public enum DataError: ErrorType {
     case UnknownRole(String)
     case InvalidData
 }

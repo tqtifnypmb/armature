@@ -9,6 +9,7 @@
 import Foundation
 
 final class Utils {
+
     static func readN(sock: Int32, buffer: UnsafeMutablePointer<Void>, n: UInt32) throws {
         var remain = n
         let ptr = buffer
