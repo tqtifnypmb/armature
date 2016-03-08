@@ -5,11 +5,6 @@ Armature is a Swift FastCGI/CGI server inspired by Python [WSGI](https://www.pyt
 - [x] Provide Python like interface
 - [x] Highly adaptable
 
-## Work in Progress
-
-This is a work in progress, so *do not* rely on this for anything important.
-All kind of Pull requests are welcome.
-
 ## Badges
 [![PRs Welcome](https://img.shields.io/badge/prs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
@@ -110,4 +105,3 @@ This project is base on [flup](https://pypi.python.org/pypi/flup) and [web.py](h
 ## TODO
 
 - More tests
-- Port to Linux

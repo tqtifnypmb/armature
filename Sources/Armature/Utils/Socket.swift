@@ -49,7 +49,7 @@ final class Socket {
     }
     
     private class func socketaddr_cast(p: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<sockaddr> {
-    return UnsafeMutablePointer<sockaddr>(p)
+        return UnsafeMutablePointer<sockaddr>(p)
     }
     
     #endif

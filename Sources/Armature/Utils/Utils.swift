@@ -146,16 +146,18 @@ final class Utils {
         switch to_check.sa_family {
         case sa_family_t(AF_INET):
             let addr_in_p: UnsafePointer<sockaddr_in> =  Utils.socketaddr_cast(&to_check)
+            var addr = addr_in_p.memory.sin_addr.s_addr
             var buffer = [Int8].init(count: sizeof(sockaddr_in), repeatedValue: 0)
-            let ipBytes = inet_ntop(AF_INET, addr_in_p, &buffer, socklen_t(sizeof(sockaddr_in)))
-            guard let ip = String.fromCString(UnsafePointer<CChar>(ipBytes)) else {
+            inet_ntop(AF_INET, &addr, &buffer, socklen_t(sizeof(sockaddr_in)))
+            guard let ip = String.fromCString(UnsafePointer<CChar>(buffer)) else {
                 return false
             }
             
             return valid_addrs.contains(ip)
 
         case sa_family_t(AF_UNIX):
-            // FIXME: Should this just return true ??
+            return true
+            /*
             let addr_un_p: UnsafePointer<sockaddr_un> = Utils.socketaddr_cast(&to_check)
             var addr = addr_un_p.memory
             var path: String?
@@ -168,6 +170,7 @@ final class Utils {
                 return false
             }
             return valid_addrs.contains(validPath)
+            */
             
         default:
             return false

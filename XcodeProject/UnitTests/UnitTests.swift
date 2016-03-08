@@ -55,8 +55,26 @@ class UnitTests: XCTestCase {
         XCTAssertEqual(nPair, toEncode)
     }
     
+    func testIsValidRemoteAddr() {
+        
+        var addrToBind = sockaddr_in()
+        addrToBind.sin_family = sa_family_t(AF_INET)
+        addrToBind.sin_port = in_port_t(16)
+        addrToBind.sin_len = UInt8(sizeof(sockaddr_in))
+        addrToBind.sin_zero = (0, 0, 0, 0, 0, 0, 0, 0)
+        
+        if 1 != inet_pton(AF_INET, "127.0.0.1", &addrToBind.sin_addr.s_addr) {
+            print("f")
+        }
+        
+        let toBind = UnitTests.socketaddr_cast(&addrToBind)
+        XCTAssert( Utils.isValidRemoteAddr(["127.0.0.1"], to_check: &toBind.memory))
+
+    }
+    
+    /*
     func testBufferedInputStorage() {
-        let ser = DebugServer(addr: "", port: 10)
+        let ser = Fast(addr: "", port: 10)
         let f = BufferedInputStorage(conn: SingleConnection(sock: 1, server: ser))
         f.contentLength = 34
         let buffer = [UInt8].init(count: 34, repeatedValue: 1)
@@ -69,5 +87,10 @@ class UnitTests: XCTestCase {
         }
         
         XCTAssertEqual(buffer, readBack)
+    }
+    */
+    
+    class func socketaddr_cast(p: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<sockaddr> {
+        return UnsafeMutablePointer<sockaddr>(p)
     }
 }
