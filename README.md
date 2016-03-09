@@ -95,7 +95,7 @@ As a programmer who wants to write a CGI/FastCGI application, I assume you know 
 
 ## Compatibility
 
-Currently Armature has not heavily tested yet. It's has been tested on OSX 10.11 , lighttpd.
+Currently Armature has not heavily tested yet. It's has been tested on OSX 10.11 , lighttpd and Ubuntu15.10 , lighttpd.
 
 ## Attributions
 
