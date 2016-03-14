@@ -1,8 +1,8 @@
 ##Introduction
 
 Armature is a Swift FastCGI/CGI server inspired by Python [WSGI](https://www.python.org/dev/peps/pep-3333/). It's goal is :
-- [x] To make writing FastCGI/CGI application as easy as writing a normal program.
-- [x] Provide Python like interface
+- To make writing FastCGI/CGI application as easy as writing a normal program.
+- Provide Python like interface
 
 ## Badges
 [![PRs Welcome](https://img.shields.io/badge/prs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
