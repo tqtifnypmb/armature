@@ -56,7 +56,6 @@ class UnitTests: XCTestCase {
     }
     
     func testIsValidRemoteAddr() {
-        
         var addrToBind = sockaddr_in()
         addrToBind.sin_family = sa_family_t(AF_INET)
         addrToBind.sin_port = in_port_t(16)
@@ -69,7 +68,6 @@ class UnitTests: XCTestCase {
         
         let toBind = UnitTests.socketaddr_cast(&addrToBind)
         XCTAssert( Utils.isValidRemoteAddr(["127.0.0.1"], to_check: &toBind.memory))
-
     }
     
     /*
