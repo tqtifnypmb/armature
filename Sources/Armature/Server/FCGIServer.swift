@@ -72,6 +72,10 @@ public final class FCGIServer: Server {
     #endif
     
     public func run(app: Application) {
+        self.run(app, socketfd: FCGI_LISTENSOCK_FILENO)
+    }
+    
+    public func run(app: Application, socketfd: Int32) {
         self.app = app
         
         #if DEBUG
@@ -87,7 +91,7 @@ public final class FCGIServer: Server {
         }
         #else
         
-        self.sock.socketFd = FCGI_LISTENSOCK_FILENO
+        self.sock.socketFd = socketfd
             
         #endif
         

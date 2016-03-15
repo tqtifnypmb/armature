@@ -47,6 +47,10 @@ public final class CGIServer: Server {
         }
     }
     
+    public func run(app: Application, socketfd _: Int32) {
+        self.run(app)
+    }
+    
     func handleRequest(req: Request) throws {
         guard let request = req as? CGIRequest else {
             return

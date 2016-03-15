@@ -28,7 +28,16 @@ import Foundation
 
 public protocol Server {
     
+    /// Server will listen on FCGI_LISTENSOCK_FILENO
+    /// to wait for connections
+    ///
+    /// Use this only if connections are from
+    /// the local http server
     func run(app: Application)
+    
+    /// Server will listen on socketfd
+    /// to wait for connections
+    func run(app: Application, socketfd: Int32)
     
     var maxConnections: rlim_t {get set}
     var maxRequests: rlim_t {get set}
